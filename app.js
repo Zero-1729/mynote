@@ -13,6 +13,7 @@ const nativeImage     = electron.nativeImage;     // Module to control native Im
 const app             = electron.app;                     // Module to control app's life
 
 const ConfigManager = require(path.join(rootPath, "/app/src/client/api/configManager"));
+const PowerMonitor  = require(path.join(rootPath, "/app/src/client/api/PowerMonitor"));
 
 // Global reference of window object,
 // To avaoid window being closed automatically when Js object is GCed.
@@ -112,6 +113,11 @@ app.on('ready', function() {
 
     // Tray manager
     const trayIcon = os.platform() === 'win32.' ? MyNoteIcons['tray-ico'] : MyNoteIcons['tray'];
+
+    // Power monitor
+    // to monitor pause calls
+    const powerMonitor = new PowerMonitor();
+    powerMonitor.enable();
 
 })
 
