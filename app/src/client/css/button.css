@@ -51,11 +51,11 @@
 }
 
 .icon-after-1 {
-	margin-left: 20px;
+	margin-left: 28px;
 }
 
 .btn-first {-webkit-user-select: none;
-	margin-left: 12px;
+	margin-left: 22px;
 }
 
 .icon-btns {
@@ -93,10 +93,6 @@
 
 .delete:hover svg path {
 	fill: red !important;
-}
-
-.settings:hover svg path {
-	fill: dodgerblue !important;
 }
 
 .starred svg path {
