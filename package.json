@@ -1,8 +1,8 @@
 {
     "name": "MyNote",
     "ProductName": "MyNote",
-    "version": "0.0.6-b",
-    "description": "A minimal Electron + Vue 2 + Webpack 2 + Vuex 2 + Vue-router 2 for note taking",
+    "version": "0.1.0",
+    "description": "A minimal Electron + VueJs 2 + Webpack 2 + Vuex 2 for note taking",
     "main": "app.js",
     "scripts": {
         "dev": "webpack",
@@ -15,13 +15,13 @@
     },
     "keywords": [
         "MyNote",
+        "mynote",
         "notes",
         "minimalist",
         "electron",
         "vue",
         "vuex",
-        "vue-router",
-        "vue+vuex"
+        "vue-router"
     ],
     "license": "MIT",
     "bugs": {
@@ -31,7 +31,6 @@
     "dependencies": {
 	"electron": "^1.7.5",
         "vue": "^2.0.1",
-        "vue-router": "^2.7.0",
         "vuex": "^2.4.0",
         "vuex-persistedstate": "^2.0.0"
     },
@@ -39,7 +38,6 @@
         "css-loader": "^0.25.0",
         "electron-reload": "^1.0.2",
         "file-loader": "^0.9.0",
-        "url-loader": "^0.5.9",
         "vue-loader": "^9.5.1",
         "webpack": "^2.1.0-beta.22"
     }
