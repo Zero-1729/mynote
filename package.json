@@ -7,7 +7,7 @@
     "scripts": {
         "dev": "webpack",
         "start": "electron ."
-        },
+    },
     "author": "rtfx <abubakarnurkhalil@gmail.com>",
     "repository": {
         "type": "git",
@@ -29,7 +29,7 @@
     },
     "homepage": "https://github.com/zero1729/mynote#readme",
     "dependencies": {
-	"electron": "^1.7.5",
+        "electron": "^1.7.5",
         "vue": "^2.0.1",
         "vuex": "^2.4.0",
         "vuex-persistedstate": "^2.0.0"
@@ -38,6 +38,7 @@
         "css-loader": "^0.25.0",
         "electron-reload": "^1.0.2",
         "file-loader": "^0.9.0",
+        "url-loader": "^0.5.9",
         "vue-loader": "^9.5.1",
         "webpack": "^2.1.0-beta.22"
     }
