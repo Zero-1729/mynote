@@ -27,13 +27,16 @@ module.exports = {
                 query: {
                     name: '[name].[ext]?[hash]'
                 }
+            },
+            {
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: 'url-loader?limit=100000',
             }
         ]
     },
     resolve: {
         alias: {
             '@': path.join(__dirname, '/app/src/client'),
-            //'vue$': 'vue/dist/vue.esm.js',
             'vue$': 'vue/dist/vue.common.js'
         },
         extensions: ['.js', '.vue', '.json', '.css']
