@@ -17,7 +17,7 @@ It uses:
 - Notes & Favourites Management
 - Auto Save/Sync notes
 - Instant/Reactive Search bar
-- status info Footer
+- Status info Footer
 - Sleep mode blocker
 - Minimize to tray
 
@@ -29,7 +29,7 @@ It uses:
 
 ---
 
-### Run MyNote 
+### Run MyNote
 
 Note: make sure you already have [NodeJs](https://nodejs.org/en/) and [git](https://git-scm.com/) installed
 
