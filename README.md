@@ -31,7 +31,7 @@ It uses:
 
 ### Run MyNote
 
-Note: make sure you already have [NodeJs](https://nodejs.org/en/) and [git](https://git-scm.com/) installed
+> Note: make sure you already have [NodeJs](https://nodejs.org/en/) and [git](https://git-scm.com/) installed
 
 Run the following commands in the Terminal
 
@@ -43,7 +43,9 @@ $ git clone https://github.com/Zero-1729/mynote/
 $ cd mynote && npm install
 
 # Webpack builds once and watches for changes in files to apply
-$ npm run dev
+# Add '&' to command to run in background and continue watching files even after 'npm start'
+# Or just regular 'npm run dev'
+$ npm run dev &
 
 # Run the app with Electron
 $ npm start
@@ -55,10 +57,9 @@ $ npm start
 
 #### Regular
 
+> Note: Builds are comming soon!
+
 Builds can be found [at this page](https://github.com/zero1729/mynote/releases).
-
-Note: Builds are comming soon!
-
 
 #### Build (advanced)
 
@@ -78,13 +79,12 @@ MyNote is currently in development. Meaning certain parts of the app can break a
 
 If you encounter any hiccups when starting the app or during use, you can reset MyNote by following the steps below:
 
-- Go to your home folder directory
+- Go to your home folder directory:
     - Windows: `%AppData%\mynote`
     - OSX: `~/Library/Application Support/mynote`
     - Linux: `~/.config/mynote/` or `$XDG_CONFIG_HOME/mynote`
 
 - Delete:
-    -
     - `IndexedDB` folder
     - `config.json` file
 
