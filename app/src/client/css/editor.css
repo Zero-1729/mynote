@@ -1,0 +1,51 @@
+#editor {
+    height: calc(100% - 2.2758rem);
+    max-height: calc(100% - 2.2758rem);
+    margin-left: 270px;
+    -webkit-user-select: none;
+}
+
+#editor textarea {
+    box-sizing: border-box;
+    padding: 8px;
+    font-family: Lato;
+    height: calc(100% - 0.310rem);
+    max-height: calc(100% - 0.310rem);
+    width: calc(100% - 0.256rem);
+    max-width: calc(100% - 0.256rem);
+    border: 0;
+    color: grey;
+    border-radius: 0;
+    outline: none;
+    font-size: 16px;
+    font-weight: normal;
+	-webkit-tap-highlight-color: transparent;
+    resize: none;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar:hover {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    /*-webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);*/
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid grey;
+    border-radius: 10px;
+}
+
+::selection {
+    background: lightgrey;
+}
+
+::-moz-selection {
+    background: lightgrey;
+}

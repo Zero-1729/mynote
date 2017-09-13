@@ -1,0 +1,16 @@
+#bottom {
+    font-family: Lato;
+    background-color: lightgrey;
+    padding-top: .512rem;
+    text-align: center;
+    color: grey;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1.725rem;
+    clear: both;
+    cursor: default;
+    position: absolute;
+    -webkit-user-select: none;
+    border-top: solid 0.1px darkgrey;
+}
