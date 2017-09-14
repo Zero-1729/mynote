@@ -34,7 +34,7 @@ class ConfigManager {
             sleepBlocker: true, // Automatically stop sleepBlocker
             autoUpdateChecker: false, // AutoUpdates should be optional
             useNativeFrame: true, // comment out later
-            minimizeToTray: true, // ??
+            minimizeToTray: true,
             displayNotifications: true, // Allow flag to be editable
             devMode: false, // make optional later
             bounds: {

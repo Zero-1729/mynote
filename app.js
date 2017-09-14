@@ -143,9 +143,9 @@ function checkBounds(bounds) {
 
 // Create Toast Notification
 function createToast() {
-    Notification("MyNote", {
-        body: "MyNote is ready!",
-        icon: os.platform() === 'win32' ? MyNoteIcons['ico'] : MyNoteIcons['256']
+    Notification("Soundplay", {
+        body: "SoundPlay is ready!",
+        icon: os.platform() === 'win32' ? SoundPlayIcons['ico'] : SoundPlayIcons['256']
         }, () => {
             console.log('Notification was clicked!')
         })

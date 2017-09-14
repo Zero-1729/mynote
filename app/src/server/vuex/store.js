@@ -11,7 +11,8 @@ Vue.use(Vuex)
 const state = {
     notes: [],
     activeNote: {},
-    allNotesCount: 0
+    allNotesCount: 0//,
+    //favNotesCount: 0
 }
 
 // Definition for possible mutations that can be applied to teh state
@@ -31,11 +32,12 @@ const mutations = {
     },
 
     DELETE_NOTE (state) {
-        if ( state.allNotesCount <= 0) {
+        if ( state.allNotesCount <= 0 || state.favNotesCount <= 0 ) {
             //Perform no more subtractions
         }
         else {
             state.allNotesCount --
+            //state.favNotesCount --
         }
 
         var index = state.notes.indexOf(state.activeNote)

@@ -89,17 +89,6 @@
 }
 
 .activeBtn:focus {
-    color: dodgerblue;
-}
-
-@keyframes animate-bar {
-    0% {
-        width: 0;
-    }
-    25% {
-        width: 0;
-    }
-    100% {
-        width: 100%;
-    }
+    color: white;
+    background: dodgerblue;
 }

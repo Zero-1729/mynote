@@ -3,10 +3,9 @@
 @import "bottom.css";
 @import "button.css";
 
-
 @font-face {
 	font-family: 'Lato';
-	src: url('./../fonts/Lato/Lato-Regular.ttf');
+	src: url('../font/Lato/Lato-Regular.ttf');
 }
 
 html, #app {

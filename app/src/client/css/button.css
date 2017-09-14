@@ -15,11 +15,15 @@
 }
 
 .btn:hover {
-	background: white;
+	background: dodgerblue;
+	color: white;
+
 }
 
 .btn:active {
     opacity: .75;
+	color: white;
+	background: dodgerblue;
 }
 
 .btn-main-group {

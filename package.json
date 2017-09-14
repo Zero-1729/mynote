@@ -2,13 +2,13 @@
     "name": "MyNote",
     "ProductName": "MyNote",
     "version": "0.0.6-b",
-    "description": "A minimal Electron + Vue 2 + Webpack 2 + Vuex 2 + app for note taking",
+    "description": "A minimal Electron + Vue 2 + Webpack 2 + Vuex 2 + Vue-router 2 for note taking",
     "main": "app.js",
     "scripts": {
-        "build": "webpack",
+        "dev": "webpack",
         "start": "electron ."
         },
-    "author": "zero1729 <abubakarnurkhalil@gmail.com>",
+    "author": "rtfx <abubakarnurkhalil@gmail.com>",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/zero1729/mynote.git"
@@ -29,15 +29,17 @@
     },
     "homepage": "https://github.com/zero1729/mynote#readme",
     "dependencies": {
+	"electron": "^1.7.5",
         "vue": "^2.0.1",
+        "vue-router": "^2.7.0",
         "vuex": "^2.4.0",
         "vuex-persistedstate": "^2.0.0"
     },
     "devDependencies": {
         "css-loader": "^0.25.0",
-        "electron": "^1.7.5",
         "electron-reload": "^1.0.2",
         "file-loader": "^0.9.0",
+        "url-loader": "^0.5.9",
         "vue-loader": "^9.5.1",
         "webpack": "^2.1.0-beta.22"
     }

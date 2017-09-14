@@ -9,10 +9,10 @@
     box-sizing: border-box;
     padding: 8px;
     font-family: Lato;
-    height: calc(100% - 0.310rem);
-    max-height: calc(100% - 0.310rem);
-    width: calc(100% - 0.256rem);
-    max-width: calc(100% - 0.256rem);
+    height: calc(100% - 0.040rem);
+    max-height: calc(100% - 0.040rem);
+    width: calc(100% - 0.010rem);
+    max-width: calc(100% - 0.010rem);
     border: 0;
     color: grey;
     border-radius: 0;
@@ -43,9 +43,9 @@
 }
 
 ::selection {
-    background: lightgrey;
+    background: #C6C5C5;
 }
 
 ::-moz-selection {
-    background: lightgrey;
+    background:  #C6C5C5;
 }
