@@ -39,7 +39,7 @@ Run the following commands in the Terminal
 # Clone the repo
 $ git clone https://github.com/Zero-1729/mynote/
 
-# Go into repo and all install dependencies
+# Go into repo and install all dependencies
 $ cd mynote && npm install
 
 # Webpack builds once and watches for changes in files to apply
