@@ -7,7 +7,7 @@ A Minimalist's Cross-Platform Notes App
 It uses:
 * [Node.js](https://nodejs.org/en/) for back-end
 * [electron (used to be atom-shell)](https://github.com/atom/electron/) for embedded browser
-* [Vue.js](https://vuejs.org/) as front-end framework and [Vue-router](https://vuejs.org/vue-router) with [Vuex](https://vuejs.org/vuex) as data-flow pattern
+* [Vue.js](https://vuejs.org/) as front-end framework with [Vuex](https://vuejs.org/vuex) as data-flow pattern
 
 ---
 
