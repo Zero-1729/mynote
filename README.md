@@ -25,7 +25,7 @@ It uses:
 
 ### Releases notes
 
-- [Releases notes](https://github.com/zero1729/mynote/releases)
+- [Releases notes](https://github.com/Zero-1729/mynote/releases)
 
 ---
 
@@ -59,7 +59,7 @@ $ npm start
 
 > Note: Builds are comming soon!
 
-Builds can be found [at this page](https://github.com/zero1729/mynote/releases).
+Builds can be found [at this page](https://github.com/Zero-1729/mynote/releases).
 
 #### Build (advanced)
 
