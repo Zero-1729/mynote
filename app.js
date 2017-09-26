@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'production'; // To increase performance
 
 const electron        = require("electron");
+const notif           = require("node-notifier");
 const path            = require('path');
 const vuex            = require("vuex");
 const vue             = require("vue");
@@ -68,11 +69,11 @@ app.on('ready', function() {
     const useNativeFrame         = configManager.getConfig().useNativeFrame;
     let bounds                   = configManager.getConfig().bounds;
 
-    console.log("mainWindow started with Dimensions: \n\n\t",bounds);
+    console.log("mainWindow started with Dimensions: \n\t",bounds);
 
     bounds = checkBounds(bounds);
 
-    console.log("mainWindow ended with Dimensions: \n\n\t", bounds);
+    console.log("\nmainWindow ended with Dimensions: \n\n\t", bounds);
 
     console.log("\nVue version:",vue.version);
     console.log("Vuex version:",vuex.version);
@@ -86,7 +87,6 @@ app.on('ready', function() {
         height                  :  bounds.height,
         minWidth                :  1000,
         minHeight               :  600,
-        titleBarStyle           :  'hidden',
         backgroundColor         :  'white',
         scrollBounce            :  true,
         show                    :  false,
@@ -148,11 +148,14 @@ function checkBounds(bounds) {
 }
 
 // Create Toast Notification
-function createToast() {
-    Notification("Soundplay", {
-        body: "SoundPlay is ready!",
-        icon: os.platform() === 'win32' ? SoundPlayIcons['ico'] : SoundPlayIcons['256']
-        }, () => {
-            console.log('Notification was clicked!')
-        })
+var createToast = () => {
+    var options = {
+        'title': 'MyNote',
+        'icon': 'app/src/client/icons/app_icon@256x256.png',
+        'message': 'App is ready!',
+        'sound': 'bottle',
+        timeout: 2
+    };
+
+    notif.notify(options);
 }
