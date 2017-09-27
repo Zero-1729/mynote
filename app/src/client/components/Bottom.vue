@@ -7,10 +7,12 @@
 <script>
 import os from 'os'
 
+var userInfo = os.userInfo();
+
 export default {
     data () {
         return {
-            user: os.hostname(),
+            user: userInfo.username,
             show: "all"
         }
     },
