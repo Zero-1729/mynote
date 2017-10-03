@@ -69,15 +69,6 @@ app.on('ready', function() {
     const useNativeFrame         = configManager.getConfig().useNativeFrame;
     let bounds                   = configManager.getConfig().bounds;
 
-    console.log("mainWindow started with Dimensions: \n\t",bounds);
-
-    bounds = checkBounds(bounds);
-
-    console.log("\nmainWindow ended with Dimensions: \n\n\t", bounds);
-
-    console.log("\nVue version:",vue.version);
-    console.log("Vuex version:",vuex.version);
-
     mainWindow = new BrowserWindow({
         title                   :  'MyNote',
         icon                    :  os.platform() === 'win32' ? MyNoteIcons['ico'] : MyNoteIcons['256'],
