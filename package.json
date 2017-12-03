@@ -11,7 +11,7 @@
     "author": "rtfx <abubakarnurkhalil@gmail.com>",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/zero1729/mynote.git"
+        "url": "git+https://github.com/Zero-1729/mynote.git"
     },
     "keywords": [
         "MyNote",
@@ -25,9 +25,9 @@
     ],
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/zero1729/mynote/issues"
+        "url": "https://github.com/Zero-1729/mynote/issues"
     },
-    "homepage": "https://github.com/zero1729/mynote#readme",
+    "homepage": "https://github.com/Zero-1729/mynote#readme",
     "dependencies": {
         "electron": "^1.7.5",
         "vue": "^2.0.1",
