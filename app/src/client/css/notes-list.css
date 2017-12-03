@@ -72,7 +72,7 @@
     border-bottom: thin lightgrey;
     color: grey;
     background: lightgrey;
-	-webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;
     -webkit-user-select: none;
     outline: none;
     font-family: Lato !important;
@@ -82,6 +82,10 @@
     width: 100%;
     border-bottom: 1px solid dodgerblue;
     transition: width .8s ease, background-color .5s ease, border-bottom .4s ease;
+}
+
+::-webkit-search-cancel-button {
+    -webkit-appearance: none;
 }
 
 .active {
