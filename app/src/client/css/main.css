@@ -39,6 +39,14 @@ img, svg {
     -webkit-user-select: none;
 }
 
-.starred {
-  fill: #192024;
+/* Fade-In */
+.fadein {
+  webkit-animation: fadein .8s;
+  animation: fadein .8s;
+}
+
+@keyframes fadein {
+  0% { opacity: 0; }
+  25% { opacity: 0.4; }
+  100%   { opacity: 1; }
 }

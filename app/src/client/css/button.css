@@ -15,15 +15,8 @@
 }
 
 .btn:hover {
-	background: dodgerblue;
-	color: white;
-
-}
-
-.btn:active {
-    opacity: .75;
-	color: white;
-	background: dodgerblue;
+	background: lightblue;
+	animation: fadein .3s;
 }
 
 .btn-main-group {

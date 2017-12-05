@@ -35,8 +35,8 @@
                     class="list-group-item" href="#"
                     :class="{active: activeNote === note}"
                     @click="updateActiveNote(note)">
-                    <h4 class="list-group-item-heading">
-                        {{ note.text.trim().substring(0, 30) }}
+                    <h4 id="list-group-item-heading">
+                        {{ note.text.trim().substring(0, 32) }}
                     </h4>
                 </a>
             </div>
