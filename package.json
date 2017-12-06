@@ -1,12 +1,18 @@
 {
     "name": "MyNote",
     "ProductName": "MyNote",
-    "version": "0.1.0",
-    "description": "A minimal Electron + VueJs 2 + Webpack 2 + Vuex 2 for note taking",
+    "version": "0.1.6",
+    "description": "A minimal Electron + VueJs app for note taking",
     "main": "app.js",
     "scripts": {
         "dev": "webpack",
-        "start": "electron ."
+        "start": "electron .",
+        "build:linux-64": "electron-packager . --ignore --overwrite --prune=true --asar=true --platfform=linux --arch=x64 --icon=app/src/client/icons/app_icon_black_64x64.png --out=app/dist",
+        "build:linux-32": "electron-packager . --ignore --overwrite --prune=true --asar=true --platfform=linux --arch=x32 --icon=app/src/client/icons/app_icon_black64x64.png --out=app/dist",
+        "build:win-64": "electron-packager . --ignore --overwrite --prune=true --asar=true --platfform=win --arch=x64 --icon=app/src/client/icons/app_icon_black64x64.ico --out=app/dist",
+        "build:win-32": "electron-packager . --ignore --overwrite --prune=true --asar=true --platfform=win --arch=x32 --icon=app/src/client/icons/app_icon_black64x64.ico --out=app/dist",
+        "build:mac-64": "electron-packager . --ignore --overwrite --prune=true --asar=true --platfform=mac --arch=x64 --icon=app/src/client/icons/app_icon_black64x64.icns --out=app/dist",
+        "build:mac-32": "electron-packager . --ignore --overwrite --prune=true --asar=true --platfform=mac --arch=x32 --icon=app/src/client/icons/app_icon_black64x64.icns --out=app/dist"
     },
     "author": "rtfx <abubakarnurkhalil@gmail.com>",
     "repository": {
@@ -32,14 +38,14 @@
         "electron": "^1.7.5",
         "vue": "^2.0.1",
         "vuex": "^2.4.0",
-        "vuex-persistedstate": "^2.0.0"
+        "vuex-persistedstate": "^2.0.0",
+        "node-notifier": "^5.1.2",
+        "teeny-conf": "^1.1.0",
     },
     "devDependencies": {
         "css-loader": "^0.25.0",
         "electron-reload": "^1.0.2",
         "file-loader": "^0.9.0",
-        "node-notifier": "^5.1.2",
-        "teeny-conf": "^1.1.0",
         "url-loader": "^0.5.9",
         "vue-loader": "^9.5.1",
         "webpack": "^2.1.0-beta.22"
