@@ -2,7 +2,7 @@
 
 A Minimalist's Cross-Platform Notes App
 
-![Screenshot](screenshot.png)
+![Screenshot](Screenshot.png)
 
 It uses:
 * [Node.js](https://nodejs.org/en/) for back-end
@@ -25,7 +25,7 @@ It uses:
 
 ### Releases notes
 
-- [Releases notes](https://github.com/Zero-1729/mynote/releases)
+[Check out tags](https://github.com/Zero-1729/mynote/releases)
 
 ---
 
@@ -71,6 +71,25 @@ Please consider that **`master` is unstable.**
 - `npm install && npm run dev`
 - Run Electron
 
+### Packaging
+
+> To package app for your platform
+
+```sh
+# Clone the repo
+$ git clone https://github.com/Zero-1729/mynote/
+
+# Go into repo and install all dependencies
+$ cd mynote && npm install
+
+# Build app
+# Replace 'platform' with your os, e.g mac, win or linux
+# Replace 'arch' with your os architecture, e.g 64-bit or 32-bit
+$ npm run build:[platform]-[arch]
+```
+
+The built app will be in the `app/dist` folder.
+
 ---
 
 ### Troubleshooting
@@ -103,13 +122,13 @@ If you want to report a bug, Just go ahead! To help us, please indicate your OS,
 ### Contribute
 
 - Fork and clone
-- Master is usually unstable, checkout to a tag to have a stable state of the app
+- **bleading** is usually unstable, and packed with the latest additions. The **master** branch is usually stable. To help out in the hacking clone **bleeding** and to solidify defences clone **master**. (Just a pun :wink:)
 
-- Install the latest version of electron either by running `npm install -g electron` or downloading the latest release available [here](https://github.com/electron/electron/releases) and just drop the app on `resources/` folder.
+- Install the latest version of electron either by running `npm install -g electron` or downloading the latest release available [here](https://github.com/electron/electron/releases) and just drop the app in the `resources/` folder.
 - You can use electron now with `electron [electronapp-dir]` command if you installed electron using npm or by running your downloaded electron.
 
 - `npm install && npm run dev` then run in a separate terminal `npm start`
-- `npm run dev` will watch for file changes using Webpack which will recompile Vue files.
+- `npm run dev` will watch for file changes using Webpack which will recompile the Vue files.
 
 - Open up DevTools
 
