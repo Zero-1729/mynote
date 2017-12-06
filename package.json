@@ -40,7 +40,7 @@
         "vuex": "^2.4.0",
         "vuex-persistedstate": "^2.0.0",
         "node-notifier": "^5.1.2",
-        "teeny-conf": "^1.1.0",
+        "teeny-conf": "^1.1.0"
     },
     "devDependencies": {
         "css-loader": "^0.25.0",
