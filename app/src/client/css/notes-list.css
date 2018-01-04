@@ -48,7 +48,7 @@
 #list-group-item-heading {
     font-weight: normal;
     font-size: 15px;
-    -webkit-user-select: none;
+    user-select: none;
 }
 
 .search-bar {
@@ -66,7 +66,7 @@
     color: grey;
     background: rgb(230, 230, 230);
     -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
+    user-select: none;
     outline: none;
     font-family: Lato !important;
 }

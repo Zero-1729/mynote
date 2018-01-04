@@ -2,7 +2,7 @@
     "name": "MyNote",
     "ProductName": "MyNote",
     "version": "0.1.6",
-    "description": "A minimal Electron + VueJs app for note taking",
+    "description": "A minimal Notes taking app built with Electron and Vuejs",
     "main": "app.js",
     "scripts": {
         "dev": "webpack",

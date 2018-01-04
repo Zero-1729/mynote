@@ -33,7 +33,7 @@ a {
 }
 
 img, svg {
-    user-drag: none;
+    -webkit-user-drag: none;
     user-select:none;
     -webkit-user-drag: none;
     -webkit-user-select: none;
@@ -41,7 +41,7 @@ img, svg {
 
 /* Fade-In */
 .fadein {
-  webkit-animation: fadein .8s;
+  -webkit-animation: fadein .8s;
   animation: fadein .8s;
 }
 

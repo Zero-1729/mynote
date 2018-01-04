@@ -2,7 +2,7 @@
     height: calc(100% - 2.2758rem);
     max-height: calc(100% - 2.2758rem);
     margin-left: 270px;
-    -webkit-user-select: none;
+    user-select: none;
 }
 
 #editor textarea {
