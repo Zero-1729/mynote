@@ -1,25 +1,23 @@
 # MyNote
 
-A Minimalist's Cross-Platform Notes App
+A Hybrid Minimalist's Cross-Platform Notes App
+
+> Built with [Electron](https://github.com/atom/electron/), [Vue.js](https://vuejs.org/) with [Vuex](https://vuejs.org/vuex)
 
 ![Screenshot](Screenshot.png)
-
-It uses:
-* [Node.js](https://nodejs.org/en/) for back-end
-* [electron (used to be atom-shell)](https://github.com/atom/electron/) for embedded browser
-* [Vue.js](https://vuejs.org/) as front-end framework with [Vuex](https://vuejs.org/vuex) as data-flow pattern
 
 ---
 
 ### Features
 
-- Cross-platform Minimalist Notes app
-- Notes & Favourites Management
-- Auto Save/Sync notes
-- Instant/Reactive Search bar
+- Supports Markdown and KaTeX 
+- Emoji Support (including the GitHub Mark and Octocat)
+- Notes Categorizer (Favourites & all Notes)
+- Auto-Hot Save notes (Saves as you type)
+- Fuzzy Notes Search bar
 - Status info Footer
+- Light/Night Mode
 - Sleep mode blocker
-- Minimize to tray
 
 ---
 
@@ -47,7 +45,7 @@ $ cd mynote && npm install
 # Or just regular 'npm run dev'
 $ npm run dev &
 
-# Run the app with Electron
+# Run the app
 $ npm start
 ```
 
@@ -61,16 +59,6 @@ $ npm start
 
 Builds can be found [at this page](https://github.com/Zero-1729/mynote/releases).
 
-#### Build (advanced)
-
-Please consider that **`master` is unstable.**
-
-- Download [Electron](https://github.com/atom/electron/releases)
-- Download MyNote [source code](https://github.com/zero1729/mynote/)
-- Put it in a folder called `app` in `[Electron path]/resources`
-- `npm install && npm run dev`
-- Run Electron
-
 ### Packaging
 
 > To package app for your platform
@@ -82,9 +70,9 @@ $ git clone https://github.com/Zero-1729/mynote/
 # Go into repo and install all dependencies
 $ cd mynote && npm install
 
-# Build app
-# Replace 'platform' with your os, e.g mac, win or linux
-# Replace 'arch' with your os architecture, e.g 64-bit or 32-bit
+# Build App
+# Replace 'platform' with your OS, e.g mac, win or Linux
+# Replace 'arch' with your OS architecture, e.g 64-bit or 32-bit
 $ npm run build:[platform]-[arch]
 ```
 
@@ -92,49 +80,32 @@ The built app will be in the `app/dist` folder.
 
 ---
 
-### Troubleshooting
-
-MyNote is currently in development. Meaning certain parts of the app can break after an update (database schemes changes, config, etc ).
-
-If you encounter any hiccups when starting the app or during use, you can reset MyNote by following the steps below:
-
-- Go to your home folder directory:
-    - Windows: `%AppData%\mynote`
-    - OSX: `~/Library/Application Support/mynote`
-    - Linux: `~/.config/mynote/` or `$XDG_CONFIG_HOME/mynote`
-
-- Delete:
-    - `IndexedDB` folder
-    - `config.json` file
-
-- Restart MyNote
-
-If you still encounter problems after that, you're more than welcome to open an issue or a PR ;)
-
----
-
 ### Bug report
 
-If you want to report a bug, Just go ahead! To help us, please indicate your OS, your MyNote version, and how to reproduce it (exactly if possibly). Adding a screenshot of the app's current state.
+If you want to report a bug or encounter any problems feel free to open an issue or a PR :wink:.
+
+It would be very helpful if you:-
+
+- please indicate your OS
+- your MyNote version
+- And how to reproduce it (exactly if possibly)
+- Adding a screenshot of the app's current state.
+
+You can also include any possible solution(s) if you have any.
 
 ---
 
 ### Contribute
 
 - Fork and clone
-- **bleading** is usually unstable, and packed with the latest additions. The **master** branch is usually stable. To help out in the hacking clone **bleeding** and to solidify defences clone **master**. (Just a pun :wink:)
+- **bleading** is usually unstable, and packed with the latest additions. The **master** branch is usually stable. To help out in the hacking clone **bleeding** and to solidify deffences clone **master**. (Just a pun :wink:)
+- `npm install && npm run dev` then run in a separate terminal (window) `npm start`
+- Open up the App's DevTools and have fun
 
-- Install the latest version of electron either by running `npm install -g electron` or downloading the latest release available [here](https://github.com/electron/electron/releases) and just drop the app in the `resources/` folder.
-- You can use electron now with `electron [electronapp-dir]` command if you installed electron using npm or by running your downloaded electron.
+Please respect the following rules:
 
-- `npm install && npm run dev` then run in a separate terminal `npm start`
-- `npm run dev` will watch for file changes using Webpack which will recompile the Vue files.
-
-- Open up DevTools
-
-Please respect a few rules:
-
-- Open an issue first to discuss about any major fixes or hacks.
+- Open an issue first to discuss about any major fixes or possible hacks.
+- No aggressive or degrading language would be tolerated in any discussion (issues, commits, etc).
 - Make the code readable and comment where possible.
 
 

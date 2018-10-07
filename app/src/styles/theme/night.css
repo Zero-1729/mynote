@@ -1,0 +1,266 @@
+/*
+    general styling
+*/
+
+/*.status {
+    background: #695799;
+    color: white;
+}*/
+
+.katex {
+    background: #093758;
+}
+
+.btn {
+    background: white;
+    color: grey;
+}
+
+.btn {
+    background: #155577;
+    color: #d4d2d2 !important;
+}
+
+.active {
+    background: #0a273c;
+    color: dodgerblue !important;
+}
+
+.hover {
+    background: rgb(17, 47, 68);
+}
+
+.activeBtn {
+    color: white !important;
+    background: dodgerblue !important;
+}
+
+/*
+    NOTESLIST.vue
+*/
+
+#toolset {
+    background: #0A273C;
+}
+
+.sidebtn {
+    background: #155577;
+}
+
+#sidepane-btn {
+    background: #082133;
+}
+
+#sidepane-btn svg path {
+    fill: white !important;
+}
+
+#notes-list {
+    background: linear-gradient(#0C304A, #1E394A);
+}
+
+#list-group-item-heading {
+    color: #d4d2d2;
+}
+
+.search {
+    background: #0d304a;
+    color: #c1bfbf;
+}
+
+#t-modal {
+    background: #082133;
+    color: #c1bfbf;
+}
+
+#t-modal input{
+    background:  #082133;
+    border-bottom: 0.3px solid #1d394a;
+}
+
+#t-modal input:focus {
+    border-bottom: 0.3px solid dodgerblue;
+}
+
+.add path, .bin path, .heart path, .export path, .settings path {
+    fill: #c1bfbf;
+}
+
+.add:hover path, .bin:hover path, .export:hover path, .settings:hover path {
+	fill: white;
+}
+
+.nightm:hover path {
+    fill: #a2a50e;
+}
+
+.nightm path {
+    fill: #d8ef05;
+}
+
+/*
+    EDITOR.vue
+*/
+
+textarea {
+    background: linear-gradient(#0C304A, #092437);
+    color: #d4d2d2;
+}
+
+::-webkit-scrollbar-track {
+    background: #104d79 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(0, 18, 31) !important;
+}
+
+/*
+    EDITOR SCREEN
+*/
+#screen {
+    background: linear-gradient(#0C304A, #092437);
+    color: #dadada;
+}
+
+strong {
+    color: white;
+}
+
+blockquote {
+    padding: 5px 15px;
+    background: rgba(5, 32, 49, 0.36);
+    border-left: 0.25em solid #0c9dc1;
+    color: #6a737d;
+}
+
+pre {
+    background:  #052031 !important;
+}
+
+code {
+    border: 1px solid #052031 !important;
+    background: #052031 !important;
+}
+
+table {
+    border: 2px solid #1d394a;
+}
+
+table thead tr:first-child {
+    background: #0a4069 !important;
+}
+
+table tr {
+    background: #0c304a00 !important; /*#0728408c !important*/
+}
+
+table tr:nth-child(2n) {
+    background-color:  #0c304a !important;
+}
+
+/*
+    BOTTOM.vue
+*/
+#bottom {
+    background: linear-gradient(#092437, #052133);
+    color: #c1bfbf;
+}
+
+footer #search input {
+    background: #2E2E2E;
+    color: rgb(162, 162, 162);
+    border-color: #0C304A;
+}
+
+.editor-search-bar-small-btn, .editor-search-bar-small-btn .darker {
+    fill: #839198;
+}
+
+.editor-search-bar-small-btn .lighter {
+    fill: #cccccc;
+}
+
+.editor-search-bar-small-btn {
+    border-top: 0.5px solid #08253a;
+    border-right: 0.5px solid #08253a;
+    border-left: 0.5px solid #08253a;
+    border-bottom: 0.5px solid #08253a;
+    background: #1b2a3b;
+}
+
+.editor-search-bar-small-btn:first-child {
+    border-top: 0.5px solid #08253a;
+    border-left: 0.5px solid #08253a;
+    border-bottom: 0.5px solid #08253a;
+    background: #1b2a3b;
+}
+
+text {
+    fill: #cccccc;
+}
+
+.editor-search-bar-small-btn:last-child {
+    border-top: 0.5px solid #08253a;
+    border-right: 0.5px solid #08253a;
+    border-bottom: 0.5px solid #08253a;
+    background: #1b2a3b;
+}
+
+.editor-search-bar-input {
+    border-color: #08253a;
+    color: #cccccc;
+    background: #0c304a;
+}
+
+.editor-search-bar-btn {
+    border-color: #1b2a3b;
+    background: #1b2a3b;
+    color: #d3d3d3;
+}
+
+.editor-search-bar-btn:active {
+    background: dodgerblue;
+    color: white;
+}
+
+.editor-search-bar-input:focus {
+    border-color: #0a5e9a;
+}
+
+.editor-search-bar-close-btn {
+    fill: #505966;
+}
+
+.editor-search-bar {
+    border-top: 1px solid #0c304a;
+    border-bottom: 1px solid #0c304a;
+    background: #052133;
+}
+
+.item-1 {
+    color: white;
+    background: #1d394a;
+}
+
+.md-icn {
+    fill: #052031;
+}
+
+.type {
+    background: #104d79 !important;
+}
+
+.live {
+    background: dodgerblue;
+    color: white;
+}
+
+.hlt {
+    padding: 2px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border: 2px solid steelblue;
+    border-radius: 2px;
+    background: rgba(30, 144, 255, 0.15);
+}

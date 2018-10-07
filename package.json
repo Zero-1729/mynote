@@ -1,8 +1,7 @@
 {
-    "name": "MyNote",
-    "ProductName": "MyNote",
-    "version": "0.1.6",
-    "description": "A minimal Notes taking app built with Electron and Vuejs",
+    "name": "mynote",
+    "version": "0.1.9",
+    "description": "A Minimalist's Markdown Notes App",
     "main": "app.js",
     "scripts": {
         "dev": "webpack",
@@ -14,10 +13,9 @@
         "build:mac-64": "electron-packager . --ignore --overwrite --prune=true --asar=true --platfform=mac --arch=x64 --icon=app/src/client/icons/app_icon_black64x64.icns --out=app/dist",
         "build:mac-32": "electron-packager . --ignore --overwrite --prune=true --asar=true --platfform=mac --arch=x32 --icon=app/src/client/icons/app_icon_black64x64.icns --out=app/dist"
     },
-    "author": "rtfx <abubakarnurkhalil@gmail.com>",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Zero-1729/mynote.git"
+        "url": "git+ssh://git@github.com/Zero-1729/mynote.git"
     },
     "keywords": [
         "MyNote",
@@ -29,25 +27,51 @@
         "vuex",
         "vue-router"
     ],
+    "author": "Zero-1729 <abubakarnurkhalil@gmail.com>",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/Zero-1729/mynote/issues"
     },
     "homepage": "https://github.com/Zero-1729/mynote#readme",
     "dependencies": {
-        "electron": "^1.7.5",
-        "vue": "^2.0.1",
-        "vuex": "^2.4.0",
-        "vuex-persistedstate": "^2.0.0",
-        "node-notifier": "^5.1.2",
-        "teeny-conf": "^1.1.0"
+        "github-markdown-css": "^2.10.0",
+        "hash.js": "^1.1.4",
+        "highlight.js": "^9.12.0",
+        "html-tags": "^2.0.0",
+        "html2markdown": "^1.1.0",
+        "katex": "^0.10.0-rc.1",
+        "markdown-toc": "^1.2.0",
+        "marked": "^0.4.0",
+        "snabbdom": "^0.7.2",
+        "snabbdom-to-html": "^5.1.1",
+        "snabbdom-virtualize": "^0.7.0",
+        "vue": "^2.5.17",
+        "vue-electron": "^1.0.6",
+        "vue-template-compiler": "^2.5.17",
+        "vuex": "^3.0.1",
+        "vuex-persistedstate": "^2.0.0"
     },
     "devDependencies": {
-        "css-loader": "^0.25.0",
-        "electron-reload": "^1.0.2",
-        "file-loader": "^0.9.0",
-        "url-loader": "^0.5.9",
-        "vue-loader": "^9.5.1",
-        "webpack": "^2.1.0-beta.22"
+        "css-loader": "^1.0.0",
+        "electron": "^3.0.0",
+        "electron-builder": "^20.28.4",
+        "electron-debug": "2.0.0",
+        "electron-devtools-installer": "^2.2.4",
+        "electron-updater": "^3.1.2",
+        "electron-window-state": "^5.0.1",
+        "node-loader": "^0.6.0",
+        "require-dir": "^1.0.0",
+        "file-loader": "^2.0.0",
+        "style-loader": "^0.23.0",
+        "to-string-loader": "^1.1.5",
+        "url-loader": "^1.1.1",
+        "vue-loader": "^15.4.2",
+        "vue-html-loader": "^1.2.4",
+        "vue-style-loader": "^4.1.2",
+        "vue-template-compiler": "^2.5.17",
+        "html-webpack-plugin": "^3.2.0",
+        "webpack": "^4.19.1",
+        "webpack-cli": "^3.1.1",
+        "webpack-dev-server": "^3.1.8"
     }
 }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import App from './client/App.vue'
-import store from './server/vuex/store'
+import App from './App.vue'
+import store from './store/index'
 
 new Vue({
     store,

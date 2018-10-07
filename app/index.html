@@ -4,25 +4,21 @@
         <title>MyNote</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
+        <!-- Fix and make secure-->
+        <meta http-equiv="Content-Security-Policy" />
+
+        <!-- to be dynamically handled by app -->
+        <link rel="stylesheet"/>
+
+        <!-- KaTeX stylesheet -->
+        <link rel="stylesheet" href="./src/styles/katex/katex.css" />
+
+        <!-- Syntax highligtht -->
+        <link rel="stylesheet" href="./src/styles/code/routeros.css"
     </head>
     <body>
         <div id="app"></div>
 
-		<!-- bundled ./app/src/main.js script -->
 		<script src="build/bundle.js"></script>
-
-        <script type="text/javascript">
-            // Quick script to enable tabs on editor
-            var textarea = document.getElementById('textarea');
-
-            textarea.onkeydown = function(e){
-                if (e.keyCode==9 || e.which==9){
-            		e.preventDefault();
-            		var s = this.selectionStart;
-            		this.value = this.value.substring(0,this.selectionStart) + "\t" + this.value.substring(this.selectionEnd);
-            		this.selectionEnd = s+1;
-            	}
-            }
-        </script>
     </body>
 </html>
