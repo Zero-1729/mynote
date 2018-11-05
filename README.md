@@ -10,11 +10,14 @@ A Hybrid Minimalist's Cross-Platform Notes App
 
 ### Features
 
-- Supports Markdown and KaTeX 
+- Supports Markdown and KaTeX
+- Support for Emoji markdown name autocomplete (using AutoMoji)
 - Emoji Support (including the GitHub Mark and Octocat)
 - Notes Categorizer (Favourites & all Notes)
 - Auto-Hot Save notes (Saves as you type)
 - Fuzzy Notes Search bar
+- Notes export to HTML
+- Scroll Focus based table colouring; Tables fully coloured when in center of view
 - Status info Footer
 - Light/Night Mode
 - Sleep mode blocker

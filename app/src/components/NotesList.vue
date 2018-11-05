@@ -142,14 +142,7 @@
             },
             toggleNM () {
                 this.$store.dispatch("toggleNM")
-
-                if (this.nm) {
-                    let sheetPath = path.join('src', window.path.sep, 'styles', window.path.sep, 'theme', window.path.sep, 'night.css')
-                    document.getElementsByTagName('link')[0].href = sheetPath;
-                } else {
-                    let sheetPath = window.path.join('src', window.path.sep, 'styles', window.path.sep, 'theme', window.path.sep, 'light.css')
-                    document.getElementsByTagName('link')[0].href = sheetPath;
-                }
+                this.$store.dispatch("loadStyle")
             },
             slideToolsetBtns () {
                 if (["", "0px"].includes(document.getElementById('toolset').style.width)) {
@@ -223,25 +216,47 @@
                 let win = remote.getCurrentWindow()
                 contextMenu.popup(win)
             },
+            serializeText(text) {
+                var result = String()
+                var symbols = {"!": "&#33;", '"': "&#34;", "#": "&#35;",
+                           "$": "&#36;", "%": "&#37;", "&": "&#38;",
+                           // To avoid exporting non-HTML symbols
+                           '”': "&#34;", '“': "&#34;", "’": "&#39;",
+                           "'": "&#39;", "(": "&#40;", ")": "&#41;",
+                           "*": "&#42;", "+": "&#43;", ",": "&#44;",
+                           "-": "&#45;", ".": "&#46;", "/": "&#47;",
+                           ":": "&#58;", ";": "&#59;", "<": "&#60;",
+                           "=": "&#61;", ">": "&#62;", "?": "&#63;",
+                           "@": "&#64;", "[": "&#91;", "\\": "&#92;",
+                           "]": "&#93;", "^": "&#94;", "_": "&#95;",
+                           "`": "&#96;", "{": "&#123;", "|": "&#124;",
+                           "}": "&#125;", "~": "&#126;"}
+
+                var syms = Object.keys(symbols)
+
+                for (var i = 0;i < text.length;i++) {
+                    if (syms.includes(text[i]) && !(text[i] == '' || text[i] == " ")) {
+                        result = result.concat(symbols[text[i]])
+                    } else {result = result.concat(text[i])}
+                }
+
+                return result
+            },
             openDir(note) {
-                    console.log("opening dir")
                     let vm = this
 
                     remote.dialog.showOpenDialog({
-                        title: "Add Tracks",
+                        title: "Export Note",
                         properties: ['saveFile', 'openDirectory', 'createDirectory', 'promptToCreate']
                     },
                     (filePaths) => {
                         if (filePaths != undefined) {
-                            console.log("raw path: ", filePaths)
-                            console.log("note: ", note)
-
                             // For now all exports should be in html
                             let path = window.path.join(filePaths[0], note.title).concat(".html")
-                            let content = window.marked(note.text)
+                            let content = window.marked(this.serializeText(note.text.toString()))
 
                             window.fs.writeFileSync(path, content)
-                            console.log(`wrote: ${path}`)
+                            console.log(`[mynote] Wrote: ${path}`)
                         }
                     })
                 }
@@ -341,6 +356,7 @@
     }
 
     .list-group {
+        transition: height 0.3s ease-out;
         height: 300px;
     }
 

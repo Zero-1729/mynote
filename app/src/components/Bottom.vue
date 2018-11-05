@@ -1,5 +1,6 @@
 <template>
     <footer id='bottom'>
+        <automoji :data="emojiNames" :parent="this.$parent"></automoji>
         <div class="editor-search-bar" v-show="showPanel">
             <div class="editor-search-bar-container">
                 <p class="editor-search-bar-status-panel-info">
@@ -45,17 +46,24 @@
 
 <script>
     import os from 'os'
+    import automoji from './AutoMoji.vue'
+
+    const {emojiNames} = require('./../lib/downmoji')
 
     const userInfo = os.userInfo();
 
     export default {
+        components: {
+            automoji
+        },
         data () {
             return {
                 user: userInfo.username,
                 status: 'No results found for',
                 searchText: '',
                 searchBackup: '',
-                showInfo: false
+                showInfo: false,
+                emojiNames: emojiNames
             }
         },
         methods: {

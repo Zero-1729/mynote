@@ -22,7 +22,8 @@ const state = {
     searchType: 'Regex',
     showSpanel: true,
     fontSize: 15,
-    showModal: false
+    showModal: false,
+    autoMojiOpen: false
     /*hiddenSidepane: false*/
 }
 
@@ -99,6 +100,12 @@ const mutations = {
         }
     },
 
+    CALCULATE_AVG_READ_TIME (state, text) {
+        // Using Assumption that average Adult reads 200 words per minute (WPM)
+        // Returns 'time' in secs
+        return text.split(' ').length * (200 / 120)
+    },
+
     /*TOGGLE_SIDEPANE (state) {
         if (state.hiddenSidepane) {
             state.hiddenSidepane = false
@@ -133,15 +140,25 @@ const mutations = {
     LOAD_STYLE (state) {
         if (state.nightmode) {
             let sheetPath = path.join('src', window.path.sep, 'styles', window.path.sep, 'theme', window.path.sep, 'night.css')
+            let syntaxSheetPath = path.join('src', window.path.sep, 'styles', window.path.sep, 'code', window.path.sep, 'monokai.css')
+
             document.getElementsByTagName('link')[0].href = sheetPath;
+            document.getElementsByTagName('link')[2].href = syntaxSheetPath;
         } else {
             let sheetPath = window.path.join('src', window.path.sep, 'styles', window.path.sep, 'theme', window.path.sep, 'light.css')
+            let syntaxSheetPath = path.join('src', window.path.sep, 'styles', window.path.sep, 'code', window.path.sep, 'github-gist.css')
+
             document.getElementsByTagName('link')[0].href = sheetPath;
+            document.getElementsByTagName('link')[2].href = syntaxSheetPath;
         }
     },
 
     SET_FONT_SIZE (state, size) {
         state.fontSize = size
+    },
+
+    SET_AUTOMOJI_OPEN (state, value) {
+        state.autoMojiOpen = value
     },
 
     SET_MODAL_VISIBILITY (state, value) {
@@ -158,7 +175,8 @@ const getters = {
     fontSize: state => state.fontSize,
     nm: state => state.nightmode,
     searchType: state => state.searchType,
-    showSpanel: state => state.showSpanel
+    showSpanel: state => state.showSpanel,
+    autoMojiOpen: state => state.autoMojiOpen
 }
 
 export default new Vuex.Store({

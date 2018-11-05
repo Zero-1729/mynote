@@ -27,8 +27,6 @@
 
     window.h2m = require("html2markdown")
 
-    //console.log(path.resolve())
-
     window.emojisPath = window.path.join(path.resolve(), window.path.sep, 'app', window.path.sep, 'build', window.path.sep, 'emojis', window.path.sep, window.path.sep, 'pngs')
 
     export default {
@@ -252,8 +250,8 @@
 
     h2 {
     	font-size: 24px;
-        padding-bottom: 2px;
-    	border-bottom: 2px solid #eaeaea;
+        padding-bottom: 4px;
+    	border-bottom: 1.5px solid #eaeaea;
     }
 
     h3 {
@@ -278,6 +276,7 @@
     }
 
     hr {
+	width: 80px;
     	border: 0 none;
     	border-top: none;
     	border-left: none;
@@ -287,6 +286,9 @@
     	color: #cccccc;
     	height: 4px;
     	padding: 0;
+	margin-top: 50px;
+	margin-bottom: 50px;
+	margin-left: 45%;
     }
 
     body > h2:first-child {

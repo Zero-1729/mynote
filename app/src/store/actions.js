@@ -34,6 +34,10 @@ export const toggleSidepane = ({ commit }) => {
     commit("TOGGLE_SIDEPANE")
 }
 
+export const calculateAvgReadTime = ({ commit }, text) => {
+    commit("CALCULATE_AVG_READ_TIME", text)
+}
+
 export const setCurrentPane = ({ commit }, pane) => {
     commit("SET_CURRENT_PANE", pane)
 }
@@ -48,6 +52,10 @@ export const loadStyle = ({ commit }) => {
 
 export const setFontSize = ({ commit }, size) => {
     commit("SET_FONT_SIZE", size)
+}
+
+export const setAutoMojiOpen = ({ commit }, value) => {
+    commit("SET_AUTOMOJI_OPEN", value)
 }
 
 export const setModalVisibility = ({ commit }, value) => {

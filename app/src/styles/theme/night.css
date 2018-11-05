@@ -108,7 +108,7 @@ textarea {
 }
 
 ::-webkit-scrollbar-track {
-    background: #104d79 !important;
+    background: linear-gradient(#104d79 60%, #ffffff00);
 }
 
 ::-webkit-scrollbar-thumb {

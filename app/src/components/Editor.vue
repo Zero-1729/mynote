@@ -11,20 +11,11 @@
             type="text"
             @input="editNote"
             class="form-control"
-             @click.self="closeTitleModal"
-             @keydown.tab.prevent="insertTab"
-             @keydown.ctrl.86="paste">
+            @click.self="closeTitleModal"
+            @keydown="handleKeypress"
+            @keydown.tab.prevent="insertTab"
+            @keydown.ctrl.86="paste">
         </textarea>
-        <table v-show="sortedEmojis.length != 0">
-            <tr v-for="(emoji, i) in sortedEmojis"
-                v-if="sortedEmojis.includes(emoji)"
-                @click="complete(i)"
-                :class="{active: i == index}">
-                    <td>
-                        {{ emoji.name }}
-                    </td>
-            </tr>
-        </table>
         <bottom></bottom>
     </div>
 </template>
@@ -37,18 +28,17 @@
 
     const dmParse = text => window.dmoji.parse(text, window.emojisPath, [' ', ';', ',', '.'])
 
+
     export default {
         components: {
             Bottom
         },
         data() {
             return {
-                rawWord: '',
-                rawWordIndex: 0,
                 index: 0, // For moving through 'sortedEmojis'
-                rawEmojis: [],
-                openAutoMojiPanel: false,
-                loading: false
+                loading: false,
+                caretPos: 0,
+                completed: false
             }
         },
         mounted() {
@@ -99,25 +89,6 @@
                     })
                 }
             }
-
-            // Decide whether to trigger 'AutoMoji'
-            let currentIndex = this.$el.children[0].selectionStart-1
-            let currentChar = this.activeNoteText[currentIndex]
-            let lastChar = this.rawWord.length == 0 ? currentChar : this.rawWord[this.rawWord.length-1]
-            let firstChar = this.rawWord.length == 0 ? '' : this.rawWord[0]
-
-            // If We detect the ':' trigger we activate AutoMoji
-            if (lastChar == ":" || firstChar == ":") {
-                this.rawWordIndex = currentIndex
-
-                // Open
-                if (currentChar == ":" && firstChar == ":") {
-                    this.rawWordIndex = 0
-                    this.rawWord = ''
-                } else {
-                    this.rawWord += currentChar
-                }
-            }
         },
         computed: {
             currentFontSize() {
@@ -140,26 +111,56 @@
                 }
             },
             sortedEmojis() {
-                return this.emojis.length > 0 ? this.swapElms(0, this.rawWordIndex) : this.emojis
+                return this.$children[0].$children[0].candidates
             },
-            emojis () {
-                return this.rawEmojis.filter((emoji) => {
-                    return emoji.name.includes(this.rawWord.slice(1).toLowerCase())
-                })
+            lastChunk() {
+                return this.$children[0].$children[0].lastChunk
+            },
+            autoMojiOpen() {
+                return this.$store.getters.autoMojiOpen
             }
         },
         watch: {
             out: (prev, curr) => {
                 // animate 'md' loading
-            }
-            /*sortedEmojis: (prev, curr) => {
-                // Reset value of index each time 'sortedCandidtes' is empty
-                if (prev.length == 0) {
+            },
+            caretPos: function (prev, curr) {
+                // Just so we force Vue to be aware of the mutation to 'caretPos'
+            },
+            autoMojiOpen: function (prev, curr) {
+                if (curr == true) {
                     this.index = 0
                 }
-            }*/
+            }
         },
         methods: {
+            updateCaretPos(direction) {
+                if (direction == 37 || direction == 8) {
+                    // left
+                    this.caretPos = this.$el.children[2].selectionStart == 0 ? this.$el.children[2].selectionStart : this.$el.children[2].selectionStart - 1
+                } else if (direction == 39) {
+                    // right
+                    this.caretPos = this.$el.children[2].selectionStart + 1 > this.activeNoteText.length ? this.$el.children[2].selectionStart : this.$el.children[2].selectionStart + 1
+                } else {
+                    this.caretPos = this.$el.children[2].selectionStart
+                }
+            },
+            handleKeypress() {
+                // Reset 'completed' on each new keypress to allow 'autoMoji' to popup
+                this.completed = false
+
+                // Hijack 'left' and 'right' arrow for 'autoMoji'
+                if (this.autoMojiOpen) {
+                    if (event.keyCode == 37 || event.keyCode == 39) {
+                        event.preventDefault()
+                        this.checkToMove()
+                    }
+                }
+
+                if (!(event.keyCode == 39 && this.caretPos >= this.activeNoteText.length)) {
+                    this.updateCaretPos(event.keyCode)
+                }
+            },
             paste() {
                 //this.$store.dispatch("editNote", window.remote.clipboard.readImage().toPng())
             },
@@ -171,46 +172,88 @@
                 this.$store.dispatch("toggleSpanel")
             },
             checkToMove() {
-                if (this.sortedEmojis.length) {
-                    if (event.keyCode == "38") {
-                        // Up arrow
-                        this.current = this.current > 0 ? this.current-1 : this.current
-                    }
-
-                    if (event.keyCode == "40") {
-                        // Down arrow
-                        this.current = this.current < this.sortedEmojis.length-1 ? this.current+1 : this.current
-                    }
+                if (event.keyCode == "37") {
+                    // Left arrow
+                    this.index = this.index > 0 ? this.index - 1 : this.index
                 }
+
+                if (event.keyCode == "39") {
+                    // Right arrow
+                    this.index = this.index < this.sortedEmojis.length -1 ? this.index + 1 : this.index
+                }
+            },
+            getLastIndexOf(pattern) {
+                let text = this.activeNoteText
+                let result = [], indices = []
+                let regex = new RegExp(pattern, "g")
+
+                while ((result = regex.exec(text))) {
+                    indices.push(result.index)
+                }
+
+                return indices
             },
             complete(index) {
                 if (this.sortedEmojis.length > 0) {
-                    let begChunk = this.activeNoteText.slice(0, this.rawWordIndex)
-                    let end = this.activeNoteText.slice(this.rawWordIndex+this.rawWord.length)
+                    // We freeze the 'curentPos' so we can reset it after mutation
+                    let initCaretPos = this.caretPos
 
-                    console.log("moving... ", begChunk.concat(this.sortedEmojis[i].name).concat(' ').concat(end))
-                    // this.$store.dispatch('editNote', eval(`begChunk.concat(this.sortedEmojis[index].${this.targetField}).join(' ').concat(' ').concat(end)`))
+                    // We have to use a custom 'indexOf' to avoid returnong the wrong index of 'lastChunk'
+                    let allLastChunkIndex = this.getLastIndexOf(this.lastChunk)
+                    let lastChunkIndex = allLastChunkIndex[allLastChunkIndex.length-1]
+                    let lastChunkLength = this.lastChunk.length
+
+                    // Break up text to include 'autocompleted' text
+                    let begChunk = this.activeNoteText.slice(0, lastChunkIndex) //this.activeNoteText.slice(0, this.activeNoteText.indexOf(this.lastChunk))
+                    let endChunk = this.activeNoteText.slice(lastChunkIndex).slice(this.lastChunk.length)
+
+                    // We clean any prepended whitespaces to clean up text and avoid overadding whitespaces
+                    // Maybe we make this feature editable in future
+                    let breakPos = 0
+                    let brokenEndChunk = endChunk.split(" ")
+
+                    // Just incase the user is backtracking after already inserting an emoji
+                    // Avoiding adding emoji like so; '... :emoji:: ...'
+                    if (brokenEndChunk[0].slice(0,1) == ":") {
+                        brokenEndChunk[0] = brokenEndChunk[0].slice(1)
+                    } else if (brokenEndChunk[0].slice(brokenEndChunk[0].length-1) == ":") {
+                        brokenEndChunk[0] = ""
+                    }
+
+                    while (1) {
+                        if (!(brokenEndChunk[breakPos] == "")) {
+                            break
+                        }
+                        breakPos += 1
+                    }
+
+                    // Finally we rebuild 'endChunk'
+                    endChunk = brokenEndChunk.slice(breakPos).join(" ")
+
+                    // Remember to handle for user editing previous text.
+                    // Include 'beg + matchedEmoji + end'
+                    let completedEmojiName = this.sortedEmojis[index]
+
+                    let result = begChunk.concat(":".concat(completedEmojiName)).concat(': ').concat(endChunk)
+
+                    this.mutateNote(result)
+
+                    // Reset 'caretPos'
+                    // First Set the 'textarea' selectionStart and selectionEnd
+                    // ... to the difference of the 'lastChunk' and the completed emoji name + the terminal characters added
+                    this.$el.children[2].selectionStart = this.$el.children[2].selectionEnd = initCaretPos + (completedEmojiName.length - this.lastChunk.length) + 4
+
+                    // Also set our 'caretPos' to make the whole thing consistent
+                    this.caretPos = this.$el.children[2].selectionStart
                 }
             },
-            swapElms(newIndex, index) {
-                let list = this.emojis
-                // Only performs swap if th index 'old' exists
-
-                if (index != -1) {
-                    // Swaps the elment at 'old' with the element at 'index'
-                    let oldElm = list[newIndex]
-                    let newElm = list[index]
-
-                    list[index] = oldElm
-                    list[newIndex] = newElm
-
-                    return list
-                } else {return this.emojis}
-            },
             insertTab () {
-                // We can Bypass tabs to command it to autocomplete emojis name
-                if (this.sortedEmojis.length > 0) {
-                    this.complete(0) // Complete with most 'fully' matched
+                // We can Bypass tabs to autocomplete emojis name
+                if (this.autoMojiOpen) {
+                    this.complete(this.index) // Complete with most 'fully' matched
+
+                    // set completed since we have 'completed' the emojiName
+                    this.completed = true
                 } else {
                     const initSelectionStart = event.target.selectionStart
                     const tab = '\t'
@@ -225,9 +268,14 @@
                 }
             },
             editNote (e) {
-                this.$store.dispatch("editNote", e.target.value)
+                this.mutateNote(e.target.value)
+            },
+            mutateNote(text) {
+                this.$store.dispatch("editNote", text)
             },
             closeTitleModal() {
+                this.updateCaretPos(event.keyCode)
+
                 document.getElementById('editor').style.opacity = "1"
                 this.$store.dispatch("setModalVisibility", false)
             }

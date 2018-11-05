@@ -22,13 +22,13 @@ const logosPath = path.join(rootPath,'app/src/icons/')
 
 // Constant to store specific icon sizes and their locations
 const MyNoteIcons = {
-        '256'       :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@256x256.png')),
-        '128'       :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@128x128.png')),
-        '64'        :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@64x64.png')),
-        '48'        :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@48x48.png')),
-        '32'        :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@32x32.png')),
+        '256'       :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@256x256_n.png')),
+        '128'       :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@128x128_n.png')),
+        '64'        :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@64x64_n.png')),
+        '48'        :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@48x48_n.png')),
+        '32'        :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@32x32_n.png')),
         'ico'       :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@256x256.ico')),
-        'tray'      :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@tray.png')), //.resize({ width: 24, height: 24 }),
+        'tray'      :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@tray_n.png')), //.resize({ width: 24, height: 24 }),
         'tray-ico'  :  nativeImage.createFromPath(path.join(logosPath, 'app_icon@256x256.ico')),
     }
 
@@ -70,7 +70,7 @@ app.on('window-all-closed', () => {
 // initialization and ready for creating browser window
 app.on('ready', function() {
     mainWindow = new BrowserWindow({
-        title                   :  'MyNote',
+        title                   :  'mynote',
         icon                    :  os.platform() === 'win32' ? MyNoteIcons['ico'] : MyNoteIcons['256'],
         width                   :  1000,
         minWidth                :  1000,
@@ -89,7 +89,7 @@ app.on('ready', function() {
     // Use this as default behaviour for menu window item
     mainWindow.webContents.openDevTools({mode: 'detach'})
 
-    BrowserWindow.addDevToolsExtension(path.join(os.homedir(), '.config/google-chrome/Default/Extensions/nhdogjmejiglipccpnnnanhbledajbpd/4.1.4_0/'))
+    BrowserWindow.addDevToolsExtension(path.join(os.homedir(), '.config/google-chrome/Default/Extensions/nhdogjmejiglipccpnnnanhbledajbpd/4.1.5_0/'))
 
 
     mainWindow.once('ready-to-show', () => {

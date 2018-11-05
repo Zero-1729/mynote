@@ -98,11 +98,11 @@ textarea {
 }
 
 ::-webkit-scrollbar-track {
-    background: gainsboro;
+    background: linear-gradient(gainsboro 90%, #ffffff00);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: darkgrey;
+    background:#bbbbbb;
     outline: 1px solid grey;
 }
 
@@ -122,13 +122,13 @@ blockquote {
 }
 
 pre {
-    background:  #eaeaea;
+    background: #eaeaea;
     border: none;
 }
 
 code {
-    border: 1px solid #eaeaea;
-    background: #e6e6e6;
+    border: 1px solid #eaeaea !important;
+    background: #eaeaea !important;
 }
 
 table {
