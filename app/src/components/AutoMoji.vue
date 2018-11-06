@@ -96,7 +96,7 @@ export default {
             return this.$parent.$parent.caretPos
         },
         lastChunk() {
-            return !this.$parent.$parent.completed ? this.activeNoteText.slice(0, this.currentCaretPos+1).split(" ")[this.activeNoteText.slice(0, this.currentCaretPos).split(" ").length - 1] : ''
+            return !this.$parent.$parent.completed ? this.activeNoteText.slice(0, this.currentCaretPos+1).split("\n")[this.activeNoteText.slice(0, this.currentCaretPos).split("\n").length - 1].split(" ")[this.activeNoteText.slice(0, this.currentCaretPos+1).split("\n")[this.activeNoteText.slice(0, this.currentCaretPos).split("\n").length - 1].split(" ").length-1] : ''
         },
         current() {
             return this.$parent.$parent.index
