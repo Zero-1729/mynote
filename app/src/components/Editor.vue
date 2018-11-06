@@ -7,7 +7,6 @@
         <textarea
             id="textarea"
             :value="activeNoteText"
-            spellcheck="true"
             type="text"
             @input="editNote"
             class="form-control"
@@ -296,7 +295,7 @@
     #editor textarea {
         display: relative;
         box-sizing: border-box;
-        padding: 8px;
+        padding: 35px 55px 35px 55px;
         font-family: Lato;
         height: calc(100% - 2.0rem);
         width: calc(100% - 0.010rem);
@@ -313,7 +312,7 @@
     #screen, #loader {
         overflow: auto;
         box-sizing: border-box;
-        padding: 8px;
+        padding: 35px 55px 40px 55px;
         font-family: Lato;
         height: calc(100% - 2.0rem);
         max-height: calc(100% - 0.040rem);

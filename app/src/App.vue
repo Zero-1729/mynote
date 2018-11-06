@@ -250,8 +250,7 @@
 
     h2 {
     	font-size: 24px;
-        padding-bottom: 4px;
-    	border-bottom: 1.5px solid #eaeaea;
+        padding-bottom: 6px;
     }
 
     h3 {
@@ -267,28 +266,26 @@
     }
 
     h6 {
-    	color: rgb(152, 150, 150);
     	font-size: 14px;
     }
 
     p, blockquote, ul, ol, dl, li, table, pre {
-    margin: 15px 0;
+        margin: 15px 0;
     }
 
     hr {
-	width: 80px;
+        width: 80px;
     	border: 0 none;
     	border-top: none;
     	border-left: none;
     	border-right: none;
     	border-bottom-style: dashed;
     	border-bottom-width: 1.5px;
-    	color: #cccccc;
-    	height: 4px;
-    	padding: 0;
-	margin-top: 50px;
-	margin-bottom: 50px;
-	margin-left: 45%;
+        height: 4px;
+        padding: 0;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        margin-left: 45%;
     }
 
     body > h2:first-child {
@@ -373,12 +370,6 @@
     	margin-bottom: 0;
     }
 
-    /*blockquote {
-    	border-left: 4px solid #dddddd;
-    	padding: 5px 15px;
-    	color: #6a737d;
-    }*/
-
     blockquote > :first-child {
     	margin-top: 0;
     }
@@ -445,7 +436,6 @@
 
     span.frame span span {
     	clear: both;
-    	color: #333333;
     	display: block;
     	padding: 5px 0 0;
     }
@@ -568,7 +558,7 @@
     .btn-group {
     	font-size: 14px;
         float: left;
-    	margin-bottom: 15px;
+    	margin-bottom: 20px;
     }
 
     .btn-group:after, .btn-group:before {

@@ -123,6 +123,14 @@ textarea {
     color: #dadada;
 }
 
+h2 {
+    border-bottom: 2px solid #09436dcc;
+}
+
+h6 {
+    color: #9a9a9a;
+}
+
 strong {
     color: white;
 }
@@ -131,7 +139,7 @@ blockquote {
     padding: 5px 15px;
     background: rgba(5, 32, 49, 0.36);
     border-left: 0.25em solid #0c9dc1;
-    color: #6a737d;
+    color: #6c8096;
 }
 
 pre {
@@ -141,6 +149,10 @@ pre {
 code {
     border: 1px solid #052031 !important;
     background: #052031 !important;
+}
+
+hr {
+    color: #1d394a;
 }
 
 table {
@@ -164,12 +176,11 @@ table tr:nth-child(2n) {
 */
 #bottom {
     background: linear-gradient(#092437, #052133);
-    color: #c1bfbf;
+    color: #cccccc;
 }
 
 footer #search input {
     background: #2E2E2E;
-    color: rgb(162, 162, 162);
     border-color: #0C304A;
 }
 
