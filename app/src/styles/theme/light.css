@@ -170,6 +170,11 @@ footer #search input {
     border-color: rgb(162, 162, 162);
 }
 
+.autocomp {
+    background: #eaeaead4;
+    border-color: 2px solid #eaeaea;
+}
+
 .editor-search-bar-small-btn, .editor-search-bar-small-btn .darker {
     fill: rgb(162, 162, 162);
 }

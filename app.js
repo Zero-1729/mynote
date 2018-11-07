@@ -72,8 +72,8 @@ app.on('ready', function() {
     mainWindow = new BrowserWindow({
         title                   :  'mynote',
         icon                    :  os.platform() === 'win32' ? MyNoteIcons['ico'] : MyNoteIcons['256'],
-        width                   :  1000,
-        minWidth                :  1000,
+        width                   :  1120,
+        minWidth                :  1120,
         height                  :  600,
         minHeight               :  600,
         backgroundColor         :  'white',

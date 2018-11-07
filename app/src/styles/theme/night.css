@@ -184,6 +184,11 @@ footer #search input {
     border-color: #0C304A;
 }
 
+.autocomp {
+    background: #082133db;
+    border-color: 2px solid #1d394a;
+}
+
 .editor-search-bar-small-btn, .editor-search-bar-small-btn .darker {
     fill: #839198;
 }

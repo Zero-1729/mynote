@@ -70,6 +70,19 @@
             }
         },
         updated() {
+            // Dynamically reset "textarea's" bottom padding
+            if (this.autoMojiOpen) {
+                if (this.caretPos == this.activeNoteText.length-1) {
+                    document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight
+                }
+                // increase bottom padding
+                // Scroll into view
+                document.getElementById('textarea').style.paddingBottom = "70px"
+            } else {
+                // reduce bottom padding
+                document.getElementById('textarea').style.paddingBottom = "35px"
+            }
+
             /// Dynamically set fontSize
             if (document.getElementById('screen') != null) {
                 document.getElementById('screen').style.fontSize = String(this.currentFontSize).concat("px")
@@ -295,7 +308,7 @@
     #editor textarea {
         display: relative;
         box-sizing: border-box;
-        padding: 35px 55px 35px 55px;
+        padding: 40px 55px 35px 55px;
         font-family: Lato;
         height: calc(100% - 2.0rem);
         width: calc(100% - 0.010rem);
@@ -303,6 +316,7 @@
         border: 0;
         border-radius: 0;
         outline: none;
+        transition: padding 0.2s ease-in;
         /*font-size: 15px;*/
         font-weight: normal;
         -webkit-tap-highlight-color: transparent;
@@ -312,7 +326,7 @@
     #screen, #loader {
         overflow: auto;
         box-sizing: border-box;
-        padding: 35px 55px 40px 55px;
+        padding: 40px 165px 40px 165px;
         font-family: Lato;
         height: calc(100% - 2.0rem);
         max-height: calc(100% - 0.040rem);

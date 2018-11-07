@@ -13,6 +13,7 @@ Vue.use(Vuex)
 const state = {
     notes: [],
     activeNote: {},
+    activeNoteDOM: null,
     allNotesCount: 0,
     favNotesCount: 0,
     unnamedNoteCount: 0,
@@ -92,6 +93,10 @@ const mutations = {
         state.activeNote = note
     },
 
+    SET_ACTIVE_NOTE_DOM (state, domObj) {
+        state.activeNoteDOM = domObj
+    },
+
     TOGGLE_LIVE_MODE (state) {
         if (state.livemode) {
             state.livemode = false
@@ -168,6 +173,7 @@ const mutations = {
 
 const getters = {
     activeNote: state => state.activeNote,
+    activeNoteDOM: state => state.activeNoteDOM,
     live: state => state.livemode,
     uNCount: state => state.unnamedNoteCount,
     onPane: state => state.onPane,

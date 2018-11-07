@@ -14,6 +14,10 @@ export const updateActiveNote = ({ commit }, note) => {
     commit("SET_ACTIVE_NOTE", note)
 }
 
+export const updateActiveNoteDOM = ({ commit }, domObj) => {
+    commit("SET_ACTIVE_NOTE_DOM", domObj)
+}
+
 export const toggleFavourite = ({ commit }) => {
     commit("TOGGLE_FAVOURITE")
 }

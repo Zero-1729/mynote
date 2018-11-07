@@ -5,6 +5,7 @@
             v-if="candidates.includes(name)"
             @click="complete(i)"
             :class="{active: i == current}">
+                <img :src="'file:///' + getEmojisPath(name)" height='15px' width='15px' />
                 <td>{{ name }}</td>
             </tr>
         </tbody>
@@ -22,17 +23,24 @@ export default {
             alphnums: ['0','1','2','3','4','5','6','7','8','9',
                 'a','b','c','d','e','f','g','h','i','j','k','l',
                 'm','n','o','p','q','r','s','t','u','v','w','x',
-                'y','z'
-            ], // To ensure Proper formating
+                'y','z'], // To ensure Proper formating
             trigger: ':', // if empty it just matches the text as you type
-            emojiNames: []
+            emojiNames: [],
+            emojisPath: null
         }
     },
     created() {
         // Populate 'emojiNames' variable with value passed to prop
         this.emojiNames = this.data
+
+        // Set path
+        this.emojisPath = window.path.join(window.emojisPath, window.path.sep)
+        console.log("> ", this.emojisPath)
     },
     methods: {
+        getEmojisPath(name) {
+            return window.path.join(this.emojisPath, name.concat(".png"))
+        },
         matchSensitivity() {
             if (this.trigger == this.lastChunk[0] && this.trigger != this.lastChunk[this.lastChunk.length-1]) {
                 return true
@@ -120,13 +128,12 @@ export default {
         margin-left: 8px;
         overflow-x: auto;
         position: absolute;
-        background: #082133;
         transition: opacity 1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
         width: 96%;
         display: flex;
         flex-flow: row;
         position: absolute;
-        bottom: 45px;
+        bottom: 25px;
     }
 
     table tbody {
@@ -135,6 +142,8 @@ export default {
 
     table tr {
         background: none !important;
+        display: flex;
+        flex-flow: row;
     }
 
     table tr:last-child {
@@ -144,6 +153,12 @@ export default {
     table tr:hover {
         background: #d7d7d7;
         opacity: 0.8;
+    }
+
+    table tr img {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 12px;
     }
 
     table td {
