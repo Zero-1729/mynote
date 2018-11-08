@@ -9,8 +9,32 @@
 const path = require('path')
 const fs   = require('fs')
 
-// All supported emoji names
-emojiNames = ['+1',
+const {mapUnicodeToShort} = require("emojione")
+
+const reverseHashMap = (hashMap) => {
+    // We create variables for storing the new reversed hashMap object,
+    // ... dict keys ('k') and values ('v')
+    let newHashMap = {}, k = [], v = []
+
+    // We extract the keys and values from the old hashMap Object
+    k = Object.keys(hashMap)
+    v = Object.values(hashMap)
+
+    // Loop through the values and assign each 'ith' value to its corresponding
+    // ... 'ith' key
+    for (var i = 0;i < k.length;i++) {
+        newHashMap[v[i]] = k[i]
+    }
+
+    // return the new hashMap containing the values ('v') to keys ('k') mapping
+    return newHashMap
+}
+
+// All supported (EmojiOne) emoji names to 'Unicode' [HashMap]
+mapEOToUnicode = reverseHashMap(mapUnicodeToShort())
+
+// All supported (GitHub) emoji names
+ghEmojiNames = ['+1',
     '-1',
     '100',
     '1234',
@@ -63,7 +87,6 @@ emojiNames = ['+1',
     'baby_bottle',
     'baby_chick',
     'baby_symbol',
-    'back',
     'baggage_claim',
     'balloon',
     'ballot_box_with_check',
@@ -92,10 +115,7 @@ emojiNames = ['+1',
     'birthday',
     'black_circle',
     'black_joker',
-    'black_medium_small_square',
-    'black_medium_square',
     'black_nib',
-    'black_small_square',
     'black_square',
     'black_square_button',
     'blossom',
@@ -565,7 +585,6 @@ emojiNames = ['+1',
     'orange_book',
     'outbox_tray',
     'ox',
-    'package',
     'page_facing_up',
     'page_with_curl',
     'pager',
@@ -596,7 +615,6 @@ emojiNames = ['+1',
     'pineapple',
     'pisces',
     'pizza',
-    'plus1',
     'point_down',
     'point_left',
     'point_right',
@@ -734,7 +752,6 @@ emojiNames = ['+1',
     'space_invader',
     'spades',
     'spaghetti',
-    'sparkle',
     'sparkler',
     'sparkles',
     'sparkling_heart',
@@ -841,7 +858,6 @@ emojiNames = ['+1',
     'unlock',
     'up',
     'us',
-    'v',
     'vertical_traffic_light',
     'vhs',
     'vibration_mode',
@@ -892,6 +908,9 @@ emojiNames = ['+1',
     'zzz'
 ]
 
+// All supported (EmojiOne) emoji names
+eoEmojiNames = Object.keys(mapEOToUnicode)
+
 /*
     Note: 'tip' stands for 'Text Index Pointer'
           'iTip' stand for 'initial Text Index Pointer'
@@ -906,7 +925,11 @@ const isAtEnd = (text, tip) => {
 }
 
 const getHTMLImgTag = (emojiName, emojisPath) => {
-    let fullPath = path.join(emojisPath, path.sep, emojiName.concat('.png'))
+    let isEmojiOne = emojisPath.includes("emojione") ? true : false
+
+    let fullPath = !isEmojiOne ? path.join(emojisPath, path.sep, emojiName.concat('.png')) :
+                              mapEOToUnicode[":".concat(emojiName).concat(":")] == undefined ? path.join(emojisPath, path.sep, emojiName.concat('.png')) : path.join(emojisPath, path.sep, mapEOToUnicode[":".concat(emojiName).concat(":")].concat('.png'))
+
     return `<img src="file:///${fullPath}" height="25px" width="25px" >`
 }
 
@@ -927,8 +950,10 @@ const reformatText = (text, textToInsert, iTip, tip) => {
    return {tip: newTIP, text: beg.concat(textToInsert).concat(end)}
 }
 
-const parse = (text, emojisPath, terminals, special_marks={'^': 'sup', '~': 'sub'}, verbose=false) => {
+const parse = (text, emojisPath, terminals, special_marks={'^': 'sup', '~': 'sub'}, emojiNames=null, verbose=false) => {
     let tip = parsed_emoji_count = parsed_syms_count = 0
+
+    emojiNames = emojiNames == null ? ghEmojiNames : emojiNames
 
     let emoji_name = ''
     let should_abort = false
@@ -974,7 +999,8 @@ const parse = (text, emojisPath, terminals, special_marks={'^': 'sup', '~': 'sub
                 }
 
                 if (!should_skip) {
-                    // Check whether the 'emojiName' exists if not just continue searching...
+                    // Check whether the 'emojiName' is valid in the current 'emojiNames' list
+                    // ... if not just continue searching...
                     if (emojiNames.includes(emoji_name)) {
                         let tag = getHTMLImgTag(emoji_name, emojisPath)
                         let formatedObject = reformatText(text, tag, iTip, tip)
@@ -1073,4 +1099,4 @@ const parse = (text, emojisPath, terminals, special_marks={'^': 'sup', '~': 'sub
     return text
 }
 
-module.exports = {parse, reformatText, emojiNames}
+module.exports = {parse, reformatText,reverseHashMap, mapEOToUnicode, ghEmojiNames, eoEmojiNames}

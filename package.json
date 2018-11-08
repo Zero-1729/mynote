@@ -34,6 +34,7 @@
     },
     "homepage": "https://github.com/Zero-1729/mynote#readme",
     "dependencies": {
+        "emojione": "^4.0.0",
         "hash.js": "^1.1.4",
         "highlight.js": "^9.12.0",
         "html-tags": "^2.0.0",

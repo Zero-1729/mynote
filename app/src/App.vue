@@ -27,7 +27,8 @@
 
     window.h2m = require("html2markdown")
 
-    window.emojisPath = window.path.join(path.resolve(), window.path.sep, 'app', window.path.sep, 'build', window.path.sep, 'emojis', window.path.sep, window.path.sep, 'pngs')
+    // Dynamically set this also to allow user be in control
+    window.emojisPath = window.path.join(path.resolve(), window.path.sep, 'app', window.path.sep, 'build', window.path.sep, 'emojis', window.path.sep, 'pngs')
 
     export default {
         created() {
@@ -51,9 +52,6 @@
             }
         },
         methods: {
-            open() {
-                console.log("DROPED >", event.dataTransfer.items)
-            },
             incFontSize() {
                 this.$store.dispatch("setFontSize", this.currentFontSize + 1)
                 document.getElementById('textarea').style.fontSize = String(this.currentFontSize).concat("px")

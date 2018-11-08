@@ -48,7 +48,9 @@
     import os from 'os'
     import automoji from './AutoMoji.vue'
 
-    const {emojiNames} = require('./../lib/downmoji')
+    // Change this to be assigned in the 'Vue' instance 
+    // To allow user to control emoji kind
+    const {ghEmojiNames} = require('./../lib/downmoji')
 
     const userInfo = os.userInfo();
 
@@ -63,7 +65,7 @@
                 searchText: '',
                 searchBackup: '',
                 showInfo: false,
-                emojiNames: emojiNames
+                emojiNames: ghEmojiNames
             }
         },
         methods: {

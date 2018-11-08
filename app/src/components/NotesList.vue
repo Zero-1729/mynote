@@ -33,7 +33,7 @@
             </div>
         </div>
         <!-- render notes in a list -->
-        <div class="notes-list-canvas">
+        <div class="notes-list-canvas" id="notes-list-canvas">
 
             <div class="list-group">
                 <div v-for="note in filteredNotes"
@@ -92,10 +92,7 @@
     export default {
         data () {
             return {
-                search: "",
-                settings: false,
-                isHovered: false,
-                index: null,
+                search: ""
             }
         },
         mounted() {
@@ -115,31 +112,12 @@
             //window.shell.openExternal('google.com')
         },
         updated() {
-            this.index = this.filteredNotes.indexOf(this.activeNote)
-
             // We force the 'input' field to be autofocused
             if (this.newNote) {
                 this.$refs.tmodal.focus()
             }
         },
         methods: {
-            move(code) {
-                code == 40 ? this.add(1) : code == 38 ? this.add(-1) : null
-
-                this.updateActiveNote(this.filteredNotes[this.index])
-            },
-            add(n) {
-                // Helper function for moving arrow index
-                if (this.index != 0 && this.index != this.filteredNotes.length - 1) {
-                    this.index += n
-                } else {
-                    if (this.index == 0) {
-                        this.index = n > 0 ? this.index += n : this.index
-                    } else {
-                        this.index = n < 0 ? this.index += n : this.index
-                    }
-                }
-            },
             toggleNM () {
                 this.$store.dispatch("toggleNM")
                 this.$store.dispatch("loadStyle")

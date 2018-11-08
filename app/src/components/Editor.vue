@@ -3,7 +3,6 @@
     @keydown.ctrl.70.prevent="toggleSearch">
         <div id="screen" v-html="out" v-show="live"
         @click.prevent="closeTitleModal"></div>
-        <div id="loader" v-show="loading"></div>
         <textarea
             id="textarea"
             :value="activeNoteText"
@@ -35,7 +34,6 @@
         data() {
             return {
                 index: 0, // For moving through 'sortedEmojis'
-                loading: false,
                 caretPos: 0,
                 completed: false
             }
@@ -114,10 +112,7 @@
             },
             out () {
                 if (this.live) {
-                    this.loading = true
-                    let t = dmParse(window.marked(this.sanitizeWithKatex()))
-                    this.loading = false
-                    return t
+                    return dmParse(window.marked(this.sanitizeWithKatex()))
                 } else {
                     return ''
                 }
@@ -133,9 +128,6 @@
             }
         },
         watch: {
-            out: (prev, curr) => {
-                // animate 'md' loading
-            },
             caretPos: function (prev, curr) {
                 // Just so we force Vue to be aware of the mutation to 'caretPos'
             },
@@ -149,12 +141,12 @@
             updateCaretPos(direction) {
                 if (direction == 37 || direction == 8) {
                     // left
-                    this.caretPos = this.$el.children[2].selectionStart == 0 ? this.$el.children[2].selectionStart : this.$el.children[2].selectionStart - 1
+                    this.caretPos = this.$el.children[1].selectionStart == 0 ? this.$el.children[1].selectionStart : this.$el.children[1].selectionStart - 1
                 } else if (direction == 39) {
                     // right
-                    this.caretPos = this.$el.children[2].selectionStart + 1 > this.activeNoteText.length ? this.$el.children[2].selectionStart : this.$el.children[2].selectionStart + 1
+                    this.caretPos = this.$el.children[1].selectionStart + 1 > this.activeNoteText.length ? this.$el.children[1].selectionStart : this.$el.children[1].selectionStart + 1
                 } else {
-                    this.caretPos = this.$el.children[2].selectionStart
+                    this.caretPos = this.$el.children[1].selectionStart
                 }
             },
             handleKeypress() {
@@ -286,7 +278,7 @@
                 this.$store.dispatch("editNote", text)
             },
             closeTitleModal() {
-                this.updateCaretPos(event.keyCode)
+                this.updateCaretPos(0)
 
                 document.getElementById('editor').style.opacity = "1"
                 this.$store.dispatch("setModalVisibility", false)
@@ -323,10 +315,10 @@
         resize: none;
     }
 
-    #screen, #loader {
+    #screen {
         overflow: auto;
         box-sizing: border-box;
-        padding: 40px 165px 40px 165px;
+        padding: 40px 65px 40px 65px;
         font-family: Lato;
         height: calc(100% - 2.0rem);
         max-height: calc(100% - 0.040rem);
@@ -339,10 +331,6 @@
     	-webkit-tap-highlight-color: transparent;
         resize: none;
         user-select: text;
-    }
-
-    #loader {
-        background: blue;
     }
 
     table {
