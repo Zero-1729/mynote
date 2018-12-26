@@ -4,7 +4,7 @@
             <tr v-for="(name, i) in candidates"
             v-if="candidates.includes(name)"
             @click="complete(i)"
-            :class="{active: i == current}">
+            :class="{activeEmoji: i == current}">
                 <img :src="'file:///' + getEmojisPath(name)" height='15px' width='15px' />
                 <td>{{ name }}</td>
             </tr>
@@ -14,7 +14,12 @@
 
 
 <script>
-export default {
+    const path = require('path')
+
+    const {mapEOToUnicode} = require('./../util/downmoji')
+    const eoAvailListRaw = require('./../../build/emojis/pngs/emojione/emojis.json')
+
+    export default {
     name: 'automoji',
     props: ['data', 'parent'],
     data() {
@@ -26,20 +31,16 @@ export default {
                 'y','z'], // To ensure Proper formating
             trigger: ':', // if empty it just matches the text as you type
             emojiNames: [],
-            emojisPath: null
+            eoAvailList: Object.keys(eoAvailListRaw)
         }
     },
     created() {
         // Populate 'emojiNames' variable with value passed to prop
         this.emojiNames = this.data
-
-        // Set path
-        this.emojisPath = window.path.join(window.emojisPath, window.path.sep)
-        console.log("> ", this.emojisPath)
     },
     methods: {
         getEmojisPath(name) {
-            return window.path.join(this.emojisPath, name.concat(".png"))
+            return path.join(this.emojisPath, !this.isEmojione ? name.concat(".png") : mapEOToUnicode[name].concat('.png'))
         },
         matchSensitivity() {
             if (this.trigger == this.lastChunk[0] && this.trigger != this.lastChunk[this.lastChunk.length-1]) {
@@ -108,6 +109,15 @@ export default {
         },
         current() {
             return this.$parent.$parent.index
+        },
+        emojisPath() {
+            return this.$store.getters.emojisPath
+        },
+        isEmojione() {
+            return this.emojisPath.includes('emojione')
+        },
+        autoMojiOpen() {
+            return this.$store.getters.autoMojiOpen
         }
     },
     watch: {
@@ -151,7 +161,6 @@ export default {
     }
 
     table tr:hover {
-        background: #d7d7d7;
         opacity: 0.8;
     }
 

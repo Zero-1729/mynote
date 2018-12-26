@@ -1,0 +1,58 @@
+[
+    {
+        "epoch" : "Wed Aug 01 2018 03:53:18 GMT+0100 (WAT)",
+        "favourite" : false,
+        "hash" : "null",
+        "text" : "Sampled Text (0)",
+        "timestamp" : "Sat Sep 08 2018 03:38:28 GMT+0100 (WAT)",
+        "title" : "Some Note"
+    },
+    {
+        "epoch" : "Mon Aug 06 2018 03:53:18 GMT+0100 (WAT)",
+        "favourite" : false,
+        "hash" : "null",
+        "text" : "We need tp fake text",
+        "timestamp" : "Wed Aug 01 2018 03:53:18 GMT+0100 (WAT)",
+        "title" : "Yet another Title 1"
+    },
+    {
+        "epoch" : "Sat Sep 01 2018 03:53:18 GMT+0100 (WAT)",
+        "favourite" : false,
+        "hash" : "null",
+        "text" : "We need tp fake text",
+        "timestamp" : "Wed Aug 01 2018 03:53:18 GMT+0100 (WAT)",
+        "title" : "Yet another Title 2"
+    },
+    {
+        "epoch" : "Sat Mar 10 2018 03:53:18 GMT+0100 (WAT)",
+        "favourite" : false,
+        "hash" : "null",
+        "text" : "We need tp fake text",
+        "timestamp" : "Wed Aug 01 2018 03:53:18 GMT+0100 (WAT)",
+        "title" : "Yet another Title 4"
+    },
+    {
+        "epoch" : "Thu Aug 09 2018 03:53:18 GMT+0100 (WAT)",
+        "favourite" : false,
+        "hash" : "null",
+        "text" : "We need tp fake text",
+        "timestamp" : "Wed Aug 01 2018 03:53:18 GMT+0100 (WAT)",
+        "title" : "Yet another Title 5"
+    },
+    {
+        "epoch" : "Sat Aug 11 2018 03:53:18 GMT+0100 (WAT)",
+        "favourite" : false,
+        "hash" : "null",
+        "text" : "We need tp fake text",
+        "timestamp" : "Wed Aug 01 2018 03:53:18 GMT+0100 (WAT)",
+        "title" : "Yet another Title 3"
+    },
+    {
+        "epoch" : "Tue Aug 21 2018 03:53:18 GMT+0100 (WAT)",
+        "favourite" : false,
+        "hash" : "null",
+        "text" : "We need to fake text",
+        "timestamp" : "Wed Aug 01 2018 03:53:18 GMT+0100 (WAT)",
+        "title" : "Yet another Title 0"
+    }
+]

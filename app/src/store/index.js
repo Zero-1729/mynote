@@ -5,31 +5,68 @@ import Vuex from "vuex"
 import * as actions from "./actions"
 import createPersistedState from "vuex-persistedstate"
 
-const sha256 = require('./../lib/hasher').sha256
+const path           = require('path')
+const sha256         = require('./../util/hasher').sha256
+
+const { mergeNotes }   = require('./../util/importer')
 
 Vue.use(Vuex)
 
 // initial state object for store
 const state = {
     notes: [],
-    activeNote: {},
-    activeNoteDOM: null,
-    allNotesCount: 0,
-    favNotesCount: 0,
-    unnamedNoteCount: 0,
-    onPane: 'all',
-    nightmode: false,
-    livemode: false,
-    searchType: 'Regex',
-    showSpanel: true,
-    fontSize: 15,
-    showModal: false,
-    autoMojiOpen: false
-    /*hiddenSidepane: false*/
+    vars: {
+        activeNote: {},
+        activeNoteDOM: null,
+        allNotesCount: 0,
+        favNotesCount: 0,
+        unnamedNoteCount: 0,
+        onPane: 'all',
+        nightmode: false,
+        livemode: false,
+        cachedTheme: 'Light',
+        cachedRoute: '/',
+        searchType: 'Fuzzy',
+        settingsOpen: false,
+        showSpanel: false,
+        showModal: false,
+        showToolset: false,
+        showExportModal: false,
+        autoMojiOpen: false,
+        emojisPath: null,
+        sideNavHidden: false,
+        exportedSingle: false,
+        exportedSingleName: null,
+        exportedAll: false,
+        exportedAllStatus: false,
+        importedNotes: false,
+    },
+    settings: {
+        theme: "Light", // "Light" or "Dark"
+        bulletListMarker: "disc", // "circle", "square", etc
+        fontSize: 14, // [0-9]+
+        textFontFamily: "Lato", // Must be installed locally
+        lineHeight: 1.2, // [0-9][.[0-9]?+]*
+        emojisType: "GitHub", // "EmojiOne" or "GitHub"
+        autoDelimiterCompleter: true, // "]", "'" or '"', "}", ")"; true or false
+        displayInfoModals: true, // Whether warning and succes modal messages should appear
+        autoNightMode: false, // Sets the night mode depending on the time of the day
+        tabSize: 4, // [0-9]+
+        lang: 'en-US'
+    }
 }
 
 // Definition for possible mutations that can be applied to teh state
 const mutations = {
+    IMPORT_NOTES (state, notes) {
+        // EXPERIMENTAL!
+        state.notes = mergeNotes(state.notes, notes)
+        /*let m = mergeNotes(state.notes, notes)
+        m.forEach((note) => {
+            console.log(note.title, note.epoch)
+        })*/
+    },
+
     ADD_NOTE (state, title) {
         const newNote = {
             title: title,
@@ -39,150 +76,249 @@ const mutations = {
             favourite: false
         }
         state.notes.push(newNote)
-        state.activeNote = newNote
+        state.vars.activeNote = newNote
 
         let index = state.notes.length - 1
 
         // Create hash for note
         state.notes[index].hash = sha256(newNote)
 
-        state.allNotesCount ++
-        state.unnamedNoteCount ++
+        state.vars.allNotesCount ++
+        state.vars.unnamedNoteCount ++
+    },
+
+    EDIT_NOTE_TITLE (state, obj) {
+        state.notes[obj.index].title = obj.title
     },
 
     EDIT_NOTE (state, text) {
         for (let i = 0;i<state.notes.length;i++) {
-            if (state.notes[i].hash == state.activeNote.hash) {
+            if (state.notes[i].hash == state.vars.activeNote.hash) {
                 state.notes[i].text = text
-                state.activeNote.text = text
+                state.vars.activeNote.text = text
 
-                state.activeNote.timestamp = Date()
-                state.notes[i].timestamp = state.activeNote.timestamp
+                state.vars.activeNote.timestamp = Date()
+                state.notes[i].timestamp = state.vars.activeNote.timestamp
 
-                state.activeNote.hash = sha256(state.activeNote)
-                state.notes[i].hash = state.activeNote.hash
+                state.vars.activeNote.hash = sha256(state.vars.activeNote)
+                state.notes[i].hash = state.vars.activeNote.hash
             }
         }
     },
 
     DELETE_NOTE (state) {
-        if ( state.allNotesCount <= 0 ) {
-            //Perform no more subtractions
+        if ( state.vars.allNotesCount <= 0 ) {
+            // Perform no more subtractions
         }
         else {
-            state.allNotesCount --
+            state.vars.allNotesCount --
         }
 
-        if (state.activeNote.text.slice(0, 10) == "Blank Note") {
-            state.unnamedNoteCount --
+        if (state.vars.activeNote.text.slice(0, 10) == "Blank Note") {
+            state.vars.unnamedNoteCount --
         }
 
-        var index = state.notes.indexOf(state.activeNote)
+        var index = state.notes.indexOf(state.vars.activeNote)
         state.notes.splice(index, 1)
         var last_index = state.notes.length - 1
 
-        state.activeNote = state.notes.length > 0 ? state.notes[last_index] : {}
+        state.vars.activeNote = state.notes.length > 0 ? state.notes[last_index] : {}
     },
 
     TOGGLE_FAVOURITE (state) {
-        state.activeNote.favourite = !state.activeNote.favourite
-        state.favNotesCount += state.activeNote.favourite ? 1 : -1
+        state.vars.activeNote.favourite = !state.vars.activeNote.favourite
+        state.vars.favNotesCount += state.vars.activeNote.favourite ? 1 : -1
     },
 
     SET_ACTIVE_NOTE (state, note) {
-        state.activeNote = note
+        state.vars.activeNote = note
     },
 
     SET_ACTIVE_NOTE_DOM (state, domObj) {
-        state.activeNoteDOM = domObj
+        state.vars.activeNoteDOM = domObj
     },
 
     TOGGLE_LIVE_MODE (state) {
-        if (state.livemode) {
-            state.livemode = false
+        if (state.vars.livemode) {
+            state.vars.livemode = false
         } else {
-            state.livemode = true
+            state.vars.livemode = true
         }
     },
-
-    CALCULATE_AVG_READ_TIME (state, text) {
-        // Using Assumption that average Adult reads 200 words per minute (WPM)
-        // Returns 'time' in secs
-        return text.split(' ').length * (200 / 120)
-    },
-
-    /*TOGGLE_SIDEPANE (state) {
-        if (state.hiddenSidepane) {
-            state.hiddenSidepane = false
-        } else {
-            state.hiddenSidepane = true
-        }
-    },*/
 
     TOGGLE_NM (state) {
-        if (state.nightmode) {
-            state.nightmode = false
-        } else {
-            state.nightmode = true
-        }
+        state.vars.nightmode = !state.vars.nightmode
+        state.settings.theme = !state.vars.nightmode ? 'Light' : 'Dark'
     },
 
-    TOGGLE_SPANEL (state) {
-        console.log("cur: ", state.showSpanel)
-        state.showSpanel = !state.showSpanel
+    TOGGLE_SPANEL (state, forced=null) {
+        state.vars.showSpanel = forced ? false : !state.vars.showSpanel
+    },
+
+    TOGGLE_TOOLSET (state, forced=null) {
+        state.vars.showToolset = forced ? true : !state.vars.showToolset
+    },
+
+    SET_SIDENAV_HIDDEN (state, value) {
+        state.vars.sideNavHidden = value
+    },
+
+    SET_SETTINGS_OPEN (state, value) {
+        state.vars.settingsOpen = value
     },
 
     SET_CURRENT_PANE (state, pane) {
-        state.onPane = pane
+        state.vars.onPane = pane
     },
 
     SET_SEARCH_TYPE (state, type) {
-        if (state.searchType == type) {
-            state.searchType = 'Fuzzy'
-        } else {state.searchType = type}
+        if (state.vars.searchType == type) {
+            state.vars.searchType = 'Fuzzy'
+        } else {state.vars.searchType = type}
+    },
+
+    IS_NIGHT_TIME (state) {
+        return !(Number(Date().slice(16, 18)) > 6
+                && Number(Date().slice(16, 18)) <= 18)
     },
 
     LOAD_STYLE (state) {
-        if (state.nightmode) {
-            let sheetPath = path.join('src', window.path.sep, 'styles', window.path.sep, 'theme', window.path.sep, 'night.css')
-            let syntaxSheetPath = path.join('src', window.path.sep, 'styles', window.path.sep, 'code', window.path.sep, 'monokai.css')
+        // Check if the time of the day is appropriate and change theme accordingly if user wants
+        if (state.settings.theme == "Dark" ||
+            (state.settings.autoNightMode && !(Number(Date().slice(16, 18)) > 6
+                && Number(Date().slice(16, 18)) <= 18)
+            )
+        ) {
+            let sheetPath = path.join('src', path.sep, 'styles', path.sep, 'theme', path.sep, 'night.css')
+            let syntaxSheetPath = path.join('src', path.sep, 'styles', path.sep, 'code', path.sep, 'monokai.css')
 
             document.getElementsByTagName('link')[0].href = sheetPath;
             document.getElementsByTagName('link')[2].href = syntaxSheetPath;
         } else {
-            let sheetPath = window.path.join('src', window.path.sep, 'styles', window.path.sep, 'theme', window.path.sep, 'light.css')
-            let syntaxSheetPath = path.join('src', window.path.sep, 'styles', window.path.sep, 'code', window.path.sep, 'github-gist.css')
+            let sheetPath = path.join('src', path.sep, 'styles', path.sep, 'theme', path.sep, 'light.css')
+            let syntaxSheetPath = path.join('src', path.sep, 'styles', path.sep, 'code', path.sep, 'github-gist.css')
 
             document.getElementsByTagName('link')[0].href = sheetPath;
             document.getElementsByTagName('link')[2].href = syntaxSheetPath;
         }
     },
 
+    LOAD_FONT_SIZE (state, path) {
+        if (path == "Editor") {
+            if (document.getElementById('textarea') != null) {
+                document.getElementById('textarea').style.fontSize = String(state.settings.fontSize).concat("px")
+                document.getElementById('fake-ta').style.fontSize = String(state.settings.fontSize).concat("px")
+                document.getElementById('screen').style.fontSize = String(state.settings.fontSize).concat("px")
+            }
+        } else {
+            document.getElementById('settings').style.fontSize = String(state.settings.fontSize).concat("px")
+        }
+    },
+
+    LOAD_FONT_FAMILY (state, path) {
+        document.getElementById('app').style.fontFamily = state.settings.textFontFamily
+
+        if (path == "Editor") {
+            document.getElementById('textarea').style.fontFamily = state.settings.textFontFamily
+            document.getElementById('fake-ta').style.fontFamily = state.settings.textFontFamily
+            document.getElementById('screen').style.fontFamily = state.settings.textFontFamily
+        } else {
+            document.getElementById('settings').style.fontFamily = state.settings.textFontFamily
+        }
+    },
+
+    SET_EXPORTED_SINGLE (state, value) {
+        state.vars.exportedSingle = value
+    },
+
+    SET_EXPORTED_SINGLE_NAME (state, value) {
+        state.vars.exportedSingleName = value
+    },
+
+    SET_EXPORTED_ALL (state, value) {
+        state.vars.exportedAll = value
+    },
+
+    SET_EXPORTED_ALL_STATUS (state, value) {
+        state.vars.exportedAllStatus = value
+    },
+
     SET_FONT_SIZE (state, size) {
-        state.fontSize = size
+        state.settings.fontSize = size
     },
 
     SET_AUTOMOJI_OPEN (state, value) {
-        state.autoMojiOpen = value
+        state.vars.autoMojiOpen = value
     },
 
     SET_MODAL_VISIBILITY (state, value) {
-        state.showModal = value
+        state.vars.showModal = value
+    },
+
+    SET_EXPORT_MODAL_VISIBILITY (state, value) {
+        state.vars.showExportModal = value
+    },
+
+    RESET_SETTINGS (state) {
+        state.settings = {
+            theme: state.settings.theme, // Leave unchanged
+            bulletListMarker: "disc",
+            fontSize: 14,
+            textFontFamily: "Lato",
+            lineHeight: 1.2,
+            emojisType: "GitHub",
+            displayInfoModals: true,
+            autoDelimiterCompleter: true,
+            autoNightMode: false,
+            tabSize: 8,
+            lang: 'en-US'
+        }
+    },
+
+    CHANGE_SETTINGS (state, obj) {
+        state.settings[obj.key] = obj.value
+    },
+
+    CACHE_THEME (state, value) {
+        state.vars.cachedTeme = value
+    },
+
+    CACHE_ROUTE (state, path) {
+        state.vars.cachedRoute = path
+    },
+
+    LOAD_EMOJIS_PATH (state, root) {
+        state.vars.emojisPath = path.join(root, path.sep, 'app', path.sep, 'build',
+                        path.sep, 'emojis', path.sep,
+                        (state.settings.emojisType != 'EmojiOne' ? 'pngs' : (path.join('pngs', path.sep, 'emojione'))))
     }
 }
 
 const getters = {
-    activeNote: state => state.activeNote,
-    activeNoteDOM: state => state.activeNoteDOM,
-    live: state => state.livemode,
-    uNCount: state => state.unnamedNoteCount,
-    onPane: state => state.onPane,
-    /*hSidepane: state => state.hiddenSidepane,*/
-    fontSize: state => state.fontSize,
-    nm: state => state.nightmode,
-    searchType: state => state.searchType,
-    showSpanel: state => state.showSpanel,
-    autoMojiOpen: state => state.autoMojiOpen
+    notes: state => state.notes,
+    activeNote: state => state.vars.activeNote,
+    activeNoteDOM: state => state.vars.activeNoteDOM,
+    live: state => state.vars.livemode,
+    uNCount: state => state.vars.unnamedNoteCount,
+    onPane: state => state.vars.onPane,
+    fontSize: state => state.settings.fontSize,
+    nm: state => state.vars.nightmode,
+    cachedTheme: state => state.vars.cachedTeme,
+    cachedRoute: state => state.vars.cachedRoute,
+    searchType: state => state.vars.searchType,
+    autoMojiOpen: state => state.vars.autoMojiOpen,
+    newNote: state => state.vars.showModal,
+    exportFile: state => state.vars.showExportModal,
+    settingsOpen: state => state.vars.settingsOpen,
+    sideNavHidden: state => state.vars.sideNavHidden,
+    showSPanel: state => state.vars.showSpanel,
+    showToolset: state => state.vars.showToolset,
+    settings: state => state.settings,
+    emojisPath: state => state.vars.emojisPath,
+    exportedSingle: state => state.vars.exportedSingle,
+    exportedSingleName: state => state.vars.exportedSingleName,
+    exportedAll: state => state.vars.exportedAll,
+    exportedAllStatus: state => state.vars.exportedAllStatus
 }
 
 export default new Vuex.Store({

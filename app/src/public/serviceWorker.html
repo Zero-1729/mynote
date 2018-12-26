@@ -1,0 +1,53 @@
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>ServiceWorker</title>
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="./../styles/theme/light.css"/>
+        <!-- KaTeX stylesheet -->
+        <link rel="stylesheet" href="./../styles/katex/katex.css" />
+        <!-- Syntax highligtht -->
+        <link rel="stylesheet" href="./../styles/code/monokai.css"/>
+
+        <style>
+            @font-face {
+                font-family: 'Lato';
+                src: url('./../styles/font/Lato-Regular.ttf');
+            }
+
+            html, body {
+                font-family: Lato;
+            }
+
+            body > div {
+                display: none;
+            }
+
+            body {
+                display: block;
+            }
+
+            body table {
+                display: table;
+            }
+
+            body input[type="checkbox"] ~ p {
+                margin-top: 0;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Content is dynamically changed -->
+        <script lang="text/javascript">
+            const {ipcRenderer} = require('electron')
+
+            ipcRenderer.on('printPDF', (event, arg) => {
+                document.body.innerHTML = arg.html
+
+                ipcRenderer.send('pdfReady', arg.filepath)
+            })
+        </script>
+    </body>
+</html>

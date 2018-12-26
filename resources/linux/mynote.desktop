@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=MyNote
-Comment=A Minimalist's Markdown Notes App
-Exec=mynote
-Terminal=false
-Type=Application
-Icon=mynote
-Categories=NotesApp;TextEditor;Utility;

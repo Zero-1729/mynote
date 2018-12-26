@@ -2,11 +2,6 @@
     general styling
 */
 
-/*.status {
-    background: #695799;
-    color: white;
-}*/
-
 .katex {
     background: #e6e6e6;
     color: #696969;
@@ -17,7 +12,7 @@
     color: #909090;
 }
 
-.active {
+.active, .activeEmoji {
     background: #d8d7d7;
     color: #2196F3;
 }
@@ -30,6 +25,10 @@
 /*
     NOTESLIST.vue
 */
+
+::placeholder {
+    color: grey;
+}
 
 #toolset {
 background: #d4d4d4;
@@ -47,10 +46,14 @@ background: #AAAAAA;
     fill: #505966;
 }
 
-#notes-list {
+#notes-list, .list-group-item a {
     background: linear-gradient(#FFFFFF, #dddddd);
     color: grey;
 }
+
+ .left h3 {
+    color: #c1c1c1;
+ }
 
 .search {
     background: none;
@@ -58,12 +61,17 @@ background: #AAAAAA;
 }
 
 #t-modal {
-    background: rgb(220, 220, 220);
+    background: #dcdcdc;
     color: lightgrey;
 }
 
+#t-modal1 {
+    color: grey;
+    background: #dcdcdc;
+}
+
 #t-modal input{
-    background: rgb(220, 220, 220);
+    background: #dcdcdc;
     border-bottom: 0.3px solid grey;
 }
 
@@ -71,8 +79,17 @@ background: #AAAAAA;
     border-bottom: 0.3px solid dodgerblue;
 }
 
-.add:hover path, .export:hover path, .settings:hover path {
-	fill: white;
+#t-modal1 .buttonArray button {
+    background: #eaeaea;
+    color: #909090;
+}
+
+#t-modal1 .buttonArray button:hover {
+    background: #ffffff;
+}
+
+.add:hover path, .heart:hover path, .export:hover path, .settings:hover path {
+	fill: #b7b7b7;
 }
 
 .nightm:hover path {
@@ -80,21 +97,52 @@ background: #AAAAAA;
 }
 
 .add path, .bin path, .heart path, .export path, .nightm path, .settings path {
-    fill: grey;
+    fill: #8a8a8a;
+}
+
+.active-settings path {
+    fill: #4183c4;
 }
 
 /*
     EDITOR.vue
 */
 
-textarea {
-    background: linear-gradient(#FFFFFF, #feffff);
+.warning {
+    background: #ff0000d6;
+    color: #ffffff;
+}
+
+.warning button {
+    background: #feffff;
     color: grey;
 }
 
-#screen {
+.success {
+    background: #55a532;
+    color: #ffffff;
+}
+
+#editor {
     background: linear-gradient(#FFFFFF, #feffff);
-    color: #5b5c5d;
+}
+
+#textarea {
+    background: transparent;
+    color: grey;
+}
+
+#fake-ta {
+    color: transparent;
+}
+
+#screen {
+    background: transparent;
+    color: grey;
+}
+
+.autocomp table tr:hover {
+    background: #d7d7d7;
 }
 
 ::-webkit-scrollbar-track {
@@ -110,12 +158,24 @@ textarea {
     EDITOR SCREEN
 */
 
+#screen::selection {
+    background: #009CFF;
+}
+
+#screen a {
+    color: #4183C4 !important;
+}
+
+.checkbox-span {
+    background: #ebf6ffb8;
+}
+
 h2 {
-    border-bottom: 2px solid #eaeaea;
+    border-bottom: 1.5px solid #eaeaea;
 }
 
 h6 {
-    color: rgb(152, 150, 150);
+    color: #989696;
 }
 
 blockquote {
@@ -123,6 +183,14 @@ blockquote {
     padding: 5px 15px;
     border-left: 0.25em solid #dfe2e5;
     color: #6a737d !important;
+}
+
+blockquote * {
+    color: #6a737d;
+}
+
+strong {
+    color: #6a737d;
 }
 
 pre {
@@ -155,6 +223,67 @@ table tr:nth-child(2n) {
     background: #eaeaea;
 }
 
+textarea::selection {
+    background: #009CFF;
+}
+
+/*
+    SETTINGS.vue
+*/
+
+.main-settings-container {
+    background: #f5f5f5;
+}
+
+.left h3 {
+    color: #909090;
+}
+
+.right button {
+    color: #feffff;
+    background: #909090;
+}
+
+.right button:hover {
+    background: dodgerblue;
+}
+
+.header {
+    background: #efefef;
+}
+
+.options-container input, .options-container select {
+    color: grey;
+}
+
+.options-container input {
+    background: none;
+}
+
+.options-container select {
+    background: #eaeaea;
+}
+
+.options-container p, .settings-options h3, .footer p {
+    color: grey;
+}
+
+.left svg path, .right a svg g path {
+    fill: #909090;
+}
+
+.options-container .slider {
+    background: #cccccc;
+}
+
+.options-container .slider:before {
+    background-color: white;
+}
+
+.options-container input:checked + .slider {
+    background: #2196f3;
+}
+
 /*
     BOTTOM.vue
 */
@@ -166,8 +295,8 @@ table tr:nth-child(2n) {
 
 footer #search input {
     background: #2E2E2E;
-    color: rgb(162, 162, 162);
-    border-color: rgb(162, 162, 162);
+    color: #a2a2a2;
+    border-color: #a2a2a2;
 }
 
 .autocomp {
@@ -176,7 +305,7 @@ footer #search input {
 }
 
 .editor-search-bar-small-btn, .editor-search-bar-small-btn .darker {
-    fill: rgb(162, 162, 162);
+    fill: #a2a2a2;
 }
 
 .editor-search-bar-small-btn .lighter {
@@ -205,9 +334,46 @@ footer #search input {
     background: white;
 }
 
+.editor-search-bar-input-container {
+    border-color: #d2cdcd;
+    background: white;
+}
+
 .editor-search-bar-input {
-    border-color: rgb(210, 205, 205);
+    /*border-color: #d2cdcd;*/
+    background: transparent;
     color: #505966;
+}
+
+.activeInput {
+    border-color: dodgerblue;
+}
+
+.activated {
+    border-color: dodgerblue !important;
+    background: #e8f4ff5e;
+}
+
+.activated-no-match {
+    border-color: red;
+    background: #ff00003d;
+}
+
+.activated-matched {
+    border-color: #55a532;
+    background: #4eff003d;
+}
+
+.grey {
+    color: grey !important;
+}
+
+.red {
+    color: #f10000;
+}
+
+.green {
+    color: #3e7924;
 }
 
 .editor-search-bar-btn {
@@ -251,4 +417,28 @@ footer #search input {
 .live {
     background: dodgerblue;
     color: white;
+}
+
+mark {
+    background: #88ff5166;
+    color: transparent;
+}
+
+.katex span {
+    text-decoration: none !important;
+}
+
+#fake-ta span {
+    color: transparent;
+}
+
+#fake-ta .mispelled, #screen .mispelled {
+    background: transparent;
+    text-decoration-style: dotted;
+    text-decoration-color: #ff0000b0;
+    text-decoration-line: underline;
+}
+
+#fake-ta .selection {
+    background: #1e90ff4d;
 }

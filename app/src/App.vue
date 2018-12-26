@@ -1,86 +1,299 @@
 <template>
-    <div id='app' @keydown.ctrl.187.prevent="incFontSize"
-    @keydown.ctrl.189.prevent="decFontSize"
-    @keydown.ctrl.72.prevent="slidePane"
+    <div id='app'
+    v-hotkey="keymap"
     @dragover.prevent
-    @drop.prevent="open">
+    @drop.prevent>
         <notes-list></notes-list>
-        <transition name="enter">
-            <editor></editor>
+        <transition name="fade">
+            <div class="main-container" >
+                <router-view></router-view>
+            </div>
         </transition>
     </div>
 </template>
 
 <script>
-    import NotesList  from './components/NotesList.vue'
-    import Editor     from './components/Editor.vue'
+    import NotesList  from './views/NotesList.vue'
+    import Editor     from './views/Editor.vue'
 
-    const {remote} = require('electron')
+    const {ipcRenderer, remote} = require('electron')
 
-    window.dmoji  = require('./lib/downmoji')
-    window.marked =  require('marked')
-    window.katex = require('katex')
+    const { buildMap } = require('./util/object')
 
-    window.path = require('path')
-    window.fs   = require('fs')
-    window.remote = remote
-
-    window.h2m = require("html2markdown")
-
-    // Dynamically set this also to allow user be in control
-    window.emojisPath = window.path.join(path.resolve(), window.path.sep, 'app', window.path.sep, 'build', window.path.sep, 'emojis', window.path.sep, 'pngs')
+    const os    = require('os')
+    const path  = require('path')
 
     export default {
+        data() {
+            return {
+                platform: os.platform()
+            }
+        },
         created() {
             // Disable Js 'eval' built-in function for security reasons
             window.eval = global.eval = () => {
                 console.log("[Notice] 'MyNote' doesn't support 'window.eval' for security reasons")
                 throw new Error("[Security Alert]")
             }
+
+            // Load last 'route'
+            this.$router.push(this.$store.getters.cachedRoute)
         },
         mounted() {
+            // ensure styling is suitable for current Window size
+            this.loadWindowSize()
+
+            this.$store.dispatch('loadEmojisPath', path.resolve())
+
             // Load stylesheet
             this.$store.dispatch("loadStyle")
 
             // Load fonts
-            document.getElementById('textarea').style.fontSize = String(this.currentFontSize).concat("px")
-            document.getElementById('screen').style.fontSize = String(this.currentFontSize).concat("px")
+            this.$store.dispatch("loadFontSize", this.$route.name)
+
+            // Load font-family
+            this.$store.dispatch("loadFontFamily", this.$route.name)
+
+            // Check if sideNavHidden
+            if (this.sideNavHidden) {
+                this.slidePane(true)
+            }
+
+            // and showToolset
+            // ... to restore their state
+            if (this.showToolset) {
+                this.slideToolset()
+            }
+
+            // Wtahc for all App related shortcut events from Main Reneder
+            ipcRenderer.on('short_newNote', (event, arg) => {
+                this.short_newNote()
+            })
+
+            ipcRenderer.on('short_exportNote', (event, arg) => {
+                this.short_exportNote()
+            })
+
+            ipcRenderer.on('short_toggleMD', (event, arg) => {
+                this.short_toggleMD()
+            })
+
+            ipcRenderer.on('short_toggleNightmode', (event, arg) => {
+                this.short_toggleNightmode()
+            })
+
+            ipcRenderer.on('short_toggleSearch', (event, arg) => {
+                this.short_toggleSearch()
+            })
+
+            ipcRenderer.on('short_toggleTools', (event, arg) => {
+                this.short_toggleTools()
+            })
+
+            ipcRenderer.on('short_hideSidenav', (event, arg) => {
+                this.short_hideSidenav()
+            })
+
+            ipcRenderer.on('short_openSettings', (event, arg) => {
+                this.short_openSettings()
+            })
+
+            ipcRenderer.on('short_incFontSize', (event, arg) => {
+                this.short_incFontSize()
+            })
+
+            ipcRenderer.on('short_decFontSize', (event, arg) => {
+                this.short_decFontSize()
+            })
+
+            // recieve full screen prompt
+            ipcRenderer.on('enter-fullscreen', (event, data) => {
+                document.getElementsByClassName('notes-list-canvas')[0].style.height = "440px"
+            })
+
+            ipcRenderer.on('leave-fullscreen', (event, data) => {
+                document.getElementsByClassName('notes-list-canvas')[0].style.height = "300px"
+            })
+
+            // Scroll to active note
+            this.activeNoteDOM.scrollIntoViewIfNeeded()
+        },
+        updated() {
+            this.$store.dispatch("loadFontFamily", this.$route.name)
+        },
+        watch: {
+            '$route' (to, from) {
+                if (to.name == "Settings") {
+                    this.$store.dispatch("setSettingsOpen", true)
+                } else {
+                    this.$store.dispatch("setSettingsOpen", false)
+                }
+
+                this.$store.dispatch('cacheRoute', to.path)
+            }
         },
         computed: {
+            keymap() {
+                return buildMap([
+                    this.resolveTrigger().concat('r'),
+                    'alt+'.concat(this.resolveTrigger().concat('r')),
+                    this.resolveTrigger().concat('n'),
+                    this.resolveTrigger().concat('e'),
+                    this.resolveTrigger().concat('f'),
+                    this.resolveTrigger().concat('g'),
+                    this.resolveTrigger().concat('t'),
+                    this.resolveTrigger().concat('h'),
+                    this.resolveTrigger().concat(','),
+                    this.resolveTrigger().concat('shift+m'),
+                    this.resolveTrigger().concat('q'),
+                    this.resolveTrigger().concat('shift+i'),
+                    this.resolveTrigger().concat('='),
+                    this.resolveTrigger().concat('-')
+                ], [
+                    this.short_reloadWindow,
+                    this.short_reloadWindow,
+                    this.short_newNote,
+                    this.short_exportNote,
+                    this.short_toggleSearch,
+                    this.short_toggleTools,
+                    this.short_toggleNightmode,
+                    this.short_hideSidenav,
+                    this.short_openSettings,
+                    this.short_toggleMD,
+                    this.short_quitApp,
+                    this.short_toggleDevTools,
+                    this.short_incFontSize,
+                    this.short_decFontSize
+                ])
+            },
             currentFontSize() {
                 return this.$store.getters.fontSize
+            },
+            activeNoteDOM () {
+                return this.$store.getters.activeNoteDOM
+            },
+            sideNavHidden () {
+                return this.$store.getters.sideNavHidden
+            },
+            showToolset() {
+                return this.$store.getters.showToolset
+            },
+            markedown() {
+                return this.$store.getters.live
             }
         },
         methods: {
-            incFontSize() {
+            resolveTrigger() {
+                // Resolve 'CommandOrControl' as trigger depending of the platform
+                // All shortcuts for mac are 'Command'
+                // ... and Win/Linux 'Control'
+                return this.platform == 'darwin' ? 'commad+' : 'ctrl+'
+            },
+            // App Behaviour
+            short_newNote() {
+                if (this.$route.name == 'Editor') {
+                    this.$children[0].openModal('title')
+                }
+            },
+            short_exportNote() {
+                if (this.$route.name == 'Editor') {
+                    this.$children[0].openModal('exportFile')
+                }
+            },
+            short_openSettings() {
+                this.$router.push(this.$route.path == "/" ? 'settings' : '/')
+            },
+            short_hideSidenav() {
+                this.slidePane()
+            },
+            short_toggleSearch() {
+                if (!this.markedown) {
+                    this.$store.dispatch('toggleSpanel')
+                }
+            },
+            short_toggleTools() {
+                if (this.$route.name == 'Editor') {
+                    this.$children[0].slideToolsetBtns(false)
+                }
+            },
+            short_toggleMD() {
+                if (this.$route.name == 'Editor') {
+                    this.$children[1].$children[0].toggleLiveMode()
+                }
+            },
+            short_toggleNightmode() {
+                this.$children[0].toggleNM()
+            },
+            short_quitApp() {
+                ipcRenderer.send('quit-app', null)
+            },
+            short_toggleDevTools() {
+                ipcRenderer.send('toggle-dev-tools', null)
+            },
+            short_reloadWindow() {
+                ipcRenderer.send('reload-window', null)
+            },
+            short_incFontSize() {
                 this.$store.dispatch("setFontSize", this.currentFontSize + 1)
-                document.getElementById('textarea').style.fontSize = String(this.currentFontSize).concat("px")
-                document.getElementById('screen').style.fontSize = String(this.currentFontSize).concat("px")
+                this.$store.dispatch("loadFontSize", this.$route.name)
             },
-            decFontSize() {
-                // Find fix
+            short_decFontSize() {
                 this.$store.dispatch("setFontSize", this.currentFontSize - 1)
-                document.getElementById('textarea').style.fontSize = String(this.currentFontSize).concat("px")
-                document.getElementById('screen').style.fontSize = String(this.currentFontSize).concat("px")
+                this.$store.dispatch("loadFontSize", this.$route.name)
             },
-            slidePane () {
+            // EOD
+            loadWindowSize() {
+                ipcRenderer.send('setWindowSize', remote.getCurrentWindow().getContentSize())
+            },
+            setSideNavHidden(value) {
+                this.$store.dispatch('setSideNavHidden', value)
+            },
+            slideToolset() {
+                if (["", "0px"].includes(document.getElementById('toolset').style.width)) {
+                    document.getElementById('toolset').style.width = "240px"
+
+                    // add setDefaultTimout to '2secs' to delay animation of buttons
+                    var animEv = () => {
+                        for (var i = 0;i < 6;i++) {
+                            document.getElementsByClassName('toolset-btns-holder')[i].style.visibility = 'visible'
+                        }
+                    }
+
+                    window.setTimeout(animEv, 225)
+                    window.clearTimeout(animEv)
+                } else {
+                    document.getElementById('toolset').style.width = "0px"
+
+                    for (var i = 0;i < 6;i++) {
+                        document.getElementsByClassName('toolset-btns-holder')[i].style.visibility = 'hidden'
+                    }
+                }
+            },
+            slidePane(force=false) {
+                // close toolset if open
+                this.$children[0].slideToolsetBtns(true)
+
                 if (document.getElementById('notes-list').style.width.includes("px") || document.getElementById('notes-list').style.width == "") {
+                    this.setSideNavHidden(false)
+
                     if ("0px" == document.getElementById('notes-list').style.width) {
                         document.getElementById('toolset').style.width = "0px"
 
                         function rest() {
                             document.getElementById('notes-list').style.visibility = 'visible'
                             document.getElementById('notes-list').style.width = "270px"
-                            document.getElementById('editor').style.marginLeft = '270px'
+                            document.getElementById('editor') ? document.getElementById('editor').style.marginLeft = '0px' : document.getElementsByClassName('main-container')[0].style.marginLeft = "270px"
                         }
 
                         // We want to give the effect off it (i.e the toolset) being closed all along
                         window.setTimeout(rest, 200)
                         window.clearTimeout(rest)
-                    } else {
+                    } else if (!("0px" == document.getElementById('notes-list').style.width) || force) {
+                        this.setSideNavHidden(true)
+
                         document.getElementById('notes-list').style.visibility = 'hidden'
                         document.getElementById('notes-list').style.width = "0px"
-                        document.getElementById('editor').style.marginLeft = '0px'
+                        document.getElementById('editor') ? document.getElementById('editor').style.marginLeft = '-270px' : document.getElementsByClassName('main-container')[0].style.marginLeft = "0px"
 
                         for (var i = 0;i < 6;i++) {
                             document.getElementsByClassName('toolset-btns-holder')[i].style.visibility = 'hidden'
@@ -88,6 +301,10 @@
                     }
                 }
             }
+        },
+        beforeDestroy() {
+            // Cache last 'route'
+            this.$store.dispatch("cacheRoute", this.$route.path)
         },
         components: {
             NotesList,
@@ -103,7 +320,6 @@
     }
 
     html, #app {
-        font-family: Lato, sans-serif !important;
         border: 0;
         margin: 0;
         padding: 0;
@@ -120,12 +336,21 @@
         position: relative;
     }
 
-    .enter {
-        transition: opacity 0.3s ease;
+    .main-container {
+        height: 100%;
+        margin-left: 270px;
+        transition: all 0.2s ease;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: all 0.3s ease-in;
+    }
+
+    .fade-enter, .fade-leave-active {
+        opacity: 0;
     }
 
     #screen a {
-    	color: #4183C4 !important;
     	text-decoration: none !important;
     }
 
@@ -319,8 +544,12 @@
     	display: inline-block;
     }
 
+    li {
+        margin-left: 15px;
+    }
+
     ul, ol {
-    	padding-left: 30px;
+    	padding-left: 0;
     }
 
     ul :first-child, ol :first-child {

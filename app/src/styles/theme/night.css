@@ -2,11 +2,6 @@
     general styling
 */
 
-/*.status {
-    background: #695799;
-    color: white;
-}*/
-
 .katex {
     background: #093758;
 }
@@ -21,13 +16,13 @@
     color: #d4d2d2 !important;
 }
 
-.active {
+.active, .activeEmoji {
     background: #0a273c;
     color: dodgerblue !important;
 }
 
 .hover {
-    background: rgb(17, 47, 68);
+    background: #112f44;
 }
 
 .activeBtn {
@@ -38,6 +33,17 @@
 /*
     NOTESLIST.vue
 */
+
+::placeholder {
+    color: #d4d2d2;
+}
+
+.search-msg {
+    background: #0a273cb3;
+    color: #c1bfbf;
+    padding: 18px 12px;
+    border-radius: 5px;
+}
 
 #toolset {
     background: #0A273C;
@@ -59,7 +65,7 @@
     background: linear-gradient(#0C304A, #1E394A);
 }
 
-#list-group-item-heading {
+#list-group-item-heading, .list-group-item a, .left h3 {
     color: #d4d2d2;
 }
 
@@ -68,7 +74,7 @@
     color: #c1bfbf;
 }
 
-#t-modal {
+#t-modal, #t-modal1 {
     background: #082133;
     color: #c1bfbf;
 }
@@ -80,6 +86,15 @@
 
 #t-modal input:focus {
     border-bottom: 0.3px solid dodgerblue;
+}
+
+#t-modal1 .buttonArray button {
+    background: #155577;
+    color: #ffffff;
+}
+
+#t-modal1 .buttonArray button:hover {
+    background: #1d394a;
 }
 
 .add path, .bin path, .heart path, .export path, .settings path {
@@ -98,13 +113,44 @@
     fill: #d8ef05;
 }
 
+.active-settings path {
+    fill: #4183c4;
+}
+
 /*
     EDITOR.vue
 */
 
-textarea {
+.warning {
+    background: #ff0000d6;
+    color: #ffffff;
+}
+
+.warning button {
+    background: #feffff;
+    color: grey;
+}
+
+.success {
+    background: #55a532;
+    color: #ffffff;
+}
+
+#editor {
     background: linear-gradient(#0C304A, #092437);
+}
+
+#textarea {
+    background: transparent;
     color: #d4d2d2;
+}
+
+.autocomp table tr:hover {
+    background: #d7d7d7;
+}
+
+textarea::selection {
+    background: #009CFF;
 }
 
 ::-webkit-scrollbar-track {
@@ -112,19 +158,36 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgb(0, 18, 31) !important;
+    background: #00121f !important;
 }
 
 /*
     EDITOR SCREEN
 */
+
+#fake-ta {
+    color: transparent;
+}
+
 #screen {
-    background: linear-gradient(#0C304A, #092437);
+    background: transparent;
     color: #dadada;
 }
 
+#screen::selection {
+    background: #009CFF;
+}
+
+#screen a {
+    color: #4cc2ff !important;
+}
+
+.checkbox-span {
+    background: #ebf6ffb8;
+}
+
 h2 {
-    border-bottom: 2px solid #09436dcc;
+    border-bottom: 1.5px solid #09436dcc;
 }
 
 h6 {
@@ -169,6 +232,66 @@ table tr {
 
 table tr:nth-child(2n) {
     background-color:  #0c304a !important;
+}
+
+/*
+    SETTINGS.vue
+*/
+
+.main-settings-container {
+    background: #ffffff;
+}
+
+.settings-options {
+    color: #eaeaea;
+}
+
+.right button {
+    color: #feffff;
+    background: #1d394a;
+}
+
+.right button:hover {
+    background: dodgerblue;
+}
+
+.header {
+    background: #0a273c;
+}
+
+.content {
+    background: #112f44;
+}
+
+.options-container select {
+    border: 1px solid #1b2a3b;
+    background: #0a273c;
+    color: #eaeaea;
+}
+
+.options-container input {
+    background: none;
+    color: #eaeaea;
+}
+
+.options-container p, .settings-options h3, .footer p {
+    color: #eaeaea;
+}
+
+.left svg path, .right a svg g path {
+    fill: #d4d2d2;
+}
+
+.options-container .slider {
+    background: #092437;
+}
+
+.options-container .slider:before {
+    background-color: #1d394a;
+}
+
+.options-container input:checked + .slider {
+    background: #2196f3;
 }
 
 /*
@@ -223,10 +346,42 @@ text {
     background: #1b2a3b;
 }
 
-.editor-search-bar-input {
-    border-color: #08253a;
-    color: #cccccc;
+.editor-search-bar-input-container {
     background: #0c304a;
+    border-color: #08253a;
+}
+
+.editor-search-bar-input {
+    /*border-color: #08253a;*/
+    color: #cccccc;
+    background: transparent;
+}
+
+.activated {
+    border-color: dodgerblue !important;
+    background: #173e5a;
+}
+
+.activated-no-match {
+    border-color: red;
+    background: #ff00003d;
+}
+
+.activated-matched {
+    border-color: #55a532;
+    background: #3db92a42 !important;
+}
+
+.grey {
+    color: #cccccc !important;
+}
+
+.red {
+    color: #f10000;
+}
+
+.green {
+    color: #3db92a;
 }
 
 .editor-search-bar-btn {
@@ -272,11 +427,26 @@ text {
     color: white;
 }
 
-.hlt {
-    padding: 2px;
-    padding-left: 6px;
-    padding-right: 6px;
-    border: 2px solid steelblue;
-    border-radius: 2px;
-    background: rgba(30, 144, 255, 0.15);
+.katex span {
+    text-decoration: none !important;
+}
+
+#fake-ta span {
+    color: transparent;
+}
+
+#fake-ta .mispelled, #screen .mispelled {
+    background: transparent;
+    text-decoration-style: dotted;
+    text-decoration-color: #ff0000b0;
+    text-decoration-line: underline;
+}
+
+#fake-ta .selection {
+    background: #1e90ff4d;
+}
+
+mark {
+    background: #45ff0029;
+    color: transparent;
 }
