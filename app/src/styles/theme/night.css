@@ -41,8 +41,6 @@
 .search-msg {
     background: #0a273cb3;
     color: #c1bfbf;
-    padding: 18px 12px;
-    border-radius: 5px;
 }
 
 #toolset {
@@ -105,6 +103,14 @@
 	fill: white;
 }
 
+.bin:hover path {
+fill: red !important;
+}
+
+.starred path {
+fill: #ff1389 !important;
+}
+
 .nightm:hover path {
     fill: #a2a50e;
 }
@@ -116,6 +122,7 @@
 .active-settings path {
     fill: #4183c4;
 }
+
 
 /*
     EDITOR.vue
@@ -143,6 +150,10 @@
 #textarea {
     background: transparent;
     color: #d4d2d2;
+}
+
+#screen a.absent {
+    color: #cc0000 !important;
 }
 
 .autocomp table tr:hover {
@@ -227,7 +238,7 @@ table thead tr:first-child {
 }
 
 table tr {
-    background: #0c304a00 !important; /*#0728408c !important*/
+    background: #0c304a00 !important;
 }
 
 table tr:nth-child(2n) {
@@ -352,7 +363,6 @@ text {
 }
 
 .editor-search-bar-input {
-    /*border-color: #08253a;*/
     color: #cccccc;
     background: transparent;
 }

@@ -46,6 +46,8 @@
 <script>
     const mark  = require('./../util/mark')
 
+    const { Id } = require('./../util/document')
+
     export default {
         name: 'Search',
         data () {
@@ -105,14 +107,14 @@
             },
             syncText() {
                 if (this.showSPanel) {
-                    document.getElementById('fake-ta').innerText = this.currentText
+                    Id('fake-ta').innerText = this.currentText
                 }
             },
             getMatches(c) {
                 this.match = c ? c : 0
             },
             getSelectionText() {
-                let ta = document.getElementById('textarea')
+                let ta = Id('textarea')
                 let text = ta.value.slice(ta.selectionStart, ta.selectionEnd)
                 return text
             },

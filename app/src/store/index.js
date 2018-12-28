@@ -9,6 +9,7 @@ const path           = require('path')
 const sha256         = require('./../util/hasher').sha256
 
 const { mergeNotes }   = require('./../util/importer')
+const { Id, TagNameN } = require('./../util/document')
 
 Vue.use(Vuex)
 
@@ -17,9 +18,6 @@ const state = {
     notes: [],
     vars: {
         activeNote: {},
-        activeNoteDOM: null,
-        allNotesCount: 0,
-        favNotesCount: 0,
         unnamedNoteCount: 0,
         onPane: 'all',
         nightmode: false,
@@ -83,7 +81,6 @@ const mutations = {
         // Create hash for note
         state.notes[index].hash = sha256(newNote)
 
-        state.vars.allNotesCount ++
         state.vars.unnamedNoteCount ++
     },
 
@@ -107,17 +104,6 @@ const mutations = {
     },
 
     DELETE_NOTE (state) {
-        if ( state.vars.allNotesCount <= 0 ) {
-            // Perform no more subtractions
-        }
-        else {
-            state.vars.allNotesCount --
-        }
-
-        if (state.vars.activeNote.text.slice(0, 10) == "Blank Note") {
-            state.vars.unnamedNoteCount --
-        }
-
         var index = state.notes.indexOf(state.vars.activeNote)
         state.notes.splice(index, 1)
         var last_index = state.notes.length - 1
@@ -125,17 +111,12 @@ const mutations = {
         state.vars.activeNote = state.notes.length > 0 ? state.notes[last_index] : {}
     },
 
-    TOGGLE_FAVOURITE (state) {
-        state.vars.activeNote.favourite = !state.vars.activeNote.favourite
-        state.vars.favNotesCount += state.vars.activeNote.favourite ? 1 : -1
-    },
-
     SET_ACTIVE_NOTE (state, note) {
         state.vars.activeNote = note
     },
 
-    SET_ACTIVE_NOTE_DOM (state, domObj) {
-        state.vars.activeNoteDOM = domObj
+    TOGGLE_FAVOURITE (state) {
+        state.vars.activeNote.favourite = !state.vars.activeNote.favourite
     },
 
     TOGGLE_LIVE_MODE (state) {
@@ -178,6 +159,7 @@ const mutations = {
     },
 
     IS_NIGHT_TIME (state) {
+        // time is between 6 pm - 6 am (i.e evening)
         return !(Number(Date().slice(16, 18)) > 6
                 && Number(Date().slice(16, 18)) <= 18)
     },
@@ -192,38 +174,38 @@ const mutations = {
             let sheetPath = path.join('src', path.sep, 'styles', path.sep, 'theme', path.sep, 'night.css')
             let syntaxSheetPath = path.join('src', path.sep, 'styles', path.sep, 'code', path.sep, 'monokai.css')
 
-            document.getElementsByTagName('link')[0].href = sheetPath;
-            document.getElementsByTagName('link')[2].href = syntaxSheetPath;
+            TagNameN('link', 0).href = sheetPath;
+            TagNameN('link', 2).href = syntaxSheetPath;
         } else {
             let sheetPath = path.join('src', path.sep, 'styles', path.sep, 'theme', path.sep, 'light.css')
             let syntaxSheetPath = path.join('src', path.sep, 'styles', path.sep, 'code', path.sep, 'github-gist.css')
 
-            document.getElementsByTagName('link')[0].href = sheetPath;
-            document.getElementsByTagName('link')[2].href = syntaxSheetPath;
+            TagNameN('link', 0).href = sheetPath;
+            TagNameN('link', 2).href = syntaxSheetPath;
         }
     },
 
     LOAD_FONT_SIZE (state, path) {
         if (path == "Editor") {
-            if (document.getElementById('textarea') != null) {
-                document.getElementById('textarea').style.fontSize = String(state.settings.fontSize).concat("px")
-                document.getElementById('fake-ta').style.fontSize = String(state.settings.fontSize).concat("px")
-                document.getElementById('screen').style.fontSize = String(state.settings.fontSize).concat("px")
+            if (Id('textarea') != null) {
+                Id('textarea').style.fontSize = String(state.settings.fontSize).concat("px")
+                Id('fake-ta').style.fontSize = String(state.settings.fontSize).concat("px")
+                Id('screen').style.fontSize = String(state.settings.fontSize).concat("px")
             }
         } else {
-            document.getElementById('settings').style.fontSize = String(state.settings.fontSize).concat("px")
+            Id('settings').style.fontSize = String(state.settings.fontSize).concat("px")
         }
     },
 
     LOAD_FONT_FAMILY (state, path) {
-        document.getElementById('app').style.fontFamily = state.settings.textFontFamily
+        Id('app').style.fontFamily = state.settings.textFontFamily
 
         if (path == "Editor") {
-            document.getElementById('textarea').style.fontFamily = state.settings.textFontFamily
-            document.getElementById('fake-ta').style.fontFamily = state.settings.textFontFamily
-            document.getElementById('screen').style.fontFamily = state.settings.textFontFamily
+            Id('textarea').style.fontFamily = state.settings.textFontFamily
+            Id('fake-ta').style.fontFamily = state.settings.textFontFamily
+            Id('screen').style.fontFamily = state.settings.textFontFamily
         } else {
-            document.getElementById('settings').style.fontFamily = state.settings.textFontFamily
+            Id('settings').style.fontFamily = state.settings.textFontFamily
         }
     },
 
@@ -297,7 +279,6 @@ const mutations = {
 const getters = {
     notes: state => state.notes,
     activeNote: state => state.vars.activeNote,
-    activeNoteDOM: state => state.vars.activeNoteDOM,
     live: state => state.vars.livemode,
     uNCount: state => state.vars.unnamedNoteCount,
     onPane: state => state.vars.onPane,

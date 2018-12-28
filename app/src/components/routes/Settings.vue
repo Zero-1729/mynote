@@ -170,6 +170,8 @@ const os      = require('os')
 const fs      = require('fs')
 const path    = require('path')
 
+const { Id, ClassNameSingle } = require('./../../util/document')
+
 export default {
     name: 'Settings',
     data() {
@@ -199,10 +201,10 @@ export default {
         this.$store.dispatch("loadFontFamily", this.$route.name)
 
         // Re-margin 'main-container'
-        document.getElementsByClassName('main-container')[0].style.marginLeft = "270px"
+        ClassNameSingle('main-container').style.marginLeft = "270px"
 
         // Scroll to active note
-        this.$parent.activeNoteDOM.scrollIntoViewIfNeeded()
+        ClassNameSingle('active').scrollIntoViewIfNeeded()
 
         ipcRenderer.on('exportedAll-status', (event, arg) => {
             this.$store.dispatch('setExportedAllStatus', arg)
@@ -262,7 +264,7 @@ export default {
 
             if (name == 'lineHeight') {
                 // change line height
-                document.getElementById('app').style.lineHeight = this.settingsValues.lineHeight
+                Id('app').style.lineHeight = this.settingsValues.lineHeight
             }
 
             if (name == 'emojisType') {

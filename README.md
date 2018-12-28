@@ -1,6 +1,6 @@
-# MyNote
+# MyNote ![icon](./app/src/icons/app_icon@64x64.png)
 
-A Hybrid Minimalist's Cross-Platform Notes App
+A Minimalist's Markdown Notes App
 
 > Built with [Electron](https://github.com/atom/electron/), [Vue.js](https://vuejs.org/) with [Vuex](https://vuejs.org/vuex) + [Vue-Router](https://vuejs.org/vue-router)
 

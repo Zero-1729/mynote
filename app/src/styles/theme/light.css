@@ -13,7 +13,7 @@
 }
 
 .active, .activeEmoji {
-    background: #d8d7d7;
+    background: #e6e6e6;
     color: #2196F3;
 }
 
@@ -30,12 +30,17 @@
     color: grey;
 }
 
+.search-msg {
+    background: #eaeaea;
+    color: grey;
+}
+
 #toolset {
-background: #d4d4d4;
+    background: #e0e0e0;
 }
 
 .sidebtn {
-background: #AAAAAA;
+    background: #bbbbbb;
 }
 
 #sidepane-btn {
@@ -47,13 +52,13 @@ background: #AAAAAA;
 }
 
 #notes-list, .list-group-item a {
-    background: linear-gradient(#FFFFFF, #dddddd);
+    background: linear-gradient(#FFFFFF, #e6e6e6);
     color: grey;
 }
 
- .left h3 {
+.left h3 {
     color: #c1c1c1;
- }
+}
 
 .search {
     background: none;
@@ -89,7 +94,15 @@ background: #AAAAAA;
 }
 
 .add:hover path, .heart:hover path, .export:hover path, .settings:hover path {
-	fill: #b7b7b7;
+    fill: #bbbbbb;
+}
+
+.bin:hover path {
+    fill: red !important;
+}
+
+.starred path {
+    fill: #ff1389 !important;
 }
 
 .nightm:hover path {
@@ -97,7 +110,7 @@ background: #AAAAAA;
 }
 
 .add path, .bin path, .heart path, .export path, .nightm path, .settings path {
-    fill: #8a8a8a;
+    fill: #adadad;
 }
 
 .active-settings path {
@@ -139,6 +152,10 @@ background: #AAAAAA;
 #screen {
     background: transparent;
     color: grey;
+}
+
+#screen a.absent {
+    color: #cc0000 !important;
 }
 
 .autocomp table tr:hover {
@@ -340,7 +357,6 @@ footer #search input {
 }
 
 .editor-search-bar-input {
-    /*border-color: #d2cdcd;*/
     background: transparent;
     color: #505966;
 }
@@ -411,7 +427,7 @@ footer #search input {
 
 .item-1 {
     color: white;
-    background: #808091;
+    background: #a2a2a2;
 }
 
 .live {

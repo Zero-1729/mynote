@@ -22,10 +22,6 @@ export const updateActiveNote = ({ commit }, note) => {
     commit("SET_ACTIVE_NOTE", note)
 }
 
-export const updateActiveNoteDOM = ({ commit }, domObj) => {
-    commit("SET_ACTIVE_NOTE_DOM", domObj)
-}
-
 export const toggleFavourite = ({ commit }) => {
     commit("TOGGLE_FAVOURITE")
 }
@@ -44,10 +40,6 @@ export const toggleSpanel = ({ commit }, forced) => {
 
 export const toggleToolset = ({ commit }, forced) => {
     commit("TOGGLE_TOOLSET", forced)
-}
-
-export const toggleSidepane = ({ commit }) => {
-    commit("TOGGLE_SIDEPANE")
 }
 
 export const setExportedSingle = ({ commit }, value) => {
@@ -82,18 +74,6 @@ export const setSearchType = ({ commit }, type) => {
     commit("SET_SEARCH_TYPE", type)
 }
 
-export const loadStyle = ({ commit }) => {
-    commit("LOAD_STYLE")
-}
-
-export const loadFontSize = ({ commit }, path) => {
-    commit("LOAD_FONT_SIZE", path)
-}
-
-export const loadFontFamily = ({ commit }, path) => {
-    commit("LOAD_FONT_FAMILY", path)
-}
-
 export const setFontSize = ({ commit }, size) => {
     commit("SET_FONT_SIZE", size)
 }
@@ -109,6 +89,19 @@ export const setModalVisibility = ({ commit }, value) => {
 export const setExportModalVisibility = ({ commit }, value) => {
     commit("SET_EXPORT_MODAL_VISIBILITY", value)
 }
+
+export const loadStyle = ({ commit }) => {
+    commit("LOAD_STYLE")
+}
+
+export const loadFontSize = ({ commit }, path) => {
+    commit("LOAD_FONT_SIZE", path)
+}
+
+export const loadFontFamily = ({ commit }, path) => {
+    commit("LOAD_FONT_FAMILY", path)
+}
+
 
 export const resetSettings = ({ commit }) => {
     commit("RESET_SETTINGS")
@@ -132,8 +125,4 @@ export const cacheRoute = ({ commit }, path) => {
 
 export const loadEmojisPath = ({ commit }, root) => {
     commit("LOAD_EMOJIS_PATH", root)
-}
-
-export const setWinSize = ({ commit }, arr) => {
-    commit("SET_WINDOW_SIZE", arr)
 }

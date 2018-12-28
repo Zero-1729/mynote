@@ -76,12 +76,7 @@
                 return this.activeNote.epoch.slice(0, 15)
             },
             noteCount () {
-                if (this.show == 'all') {
-                    return this.$store.state.allNotesCount
-                }
-                else if (this.show == 'fav') {
-                    return this.$store.state.favNotesCount
-                }
+                return this.$parent.$parent.$children[0].filteredNotes.length
             },
             isLive () {
                 return this.$store.getters.live

@@ -69,6 +69,7 @@
     const mark          = require('./../util/mark')
     const dmoji         = require('./../util/downmoji')
     const { buildMap }  = require('./../util/object')
+    const { Id, ClassNameSingle, QuerySelectorAll, CreateElement } = require('./../util/document')
     const katex         = require('katex')
 
     const path          = require('path')
@@ -108,6 +109,7 @@
                 deletedDelim: false,
                 alignCaretPos: false,
                 alignCaretPosOffset: 0,
+                sidepaneScrollIsOffset: false,
                 headings: {
                     1: '#',
                     2: '##',
@@ -125,8 +127,8 @@
         mounted() {
             // Create Instance
             this.resizeFakeTA()
-            this.taInstance = new mark(document.getElementById('fake-ta'))
-            this.scInstance = new mark(document.getElementById('screen'))
+            this.taInstance = new mark(Id('fake-ta'))
+            this.scInstance = new mark(Id('screen'))
 
             // Load up the dictionary to be used for 'spellcheck'
             let vm = this
@@ -177,14 +179,16 @@
                 this.handleExternalLinks()
                 this.setListStyle()
                 // Fix Styling for checkboxes (task list)
-                this.clearListStyle(this.getCheckboxList(document.getElementById('screen')))
+                this.clearListStyle(this.getCheckboxList(Id('screen')))
             }
 
             // Set 'Textarea' Tab Size
             this.updateTATabSize()
 
-            // Scroll to active note
-            this.scrollToActiveNoteDOM()
+            if (this.notes.length > 0) {
+                // Scroll to active note
+                ClassNameSingle('active').scrollIntoViewIfNeeded()
+            }
 
             // To wait for 'pdf' export response status from Main Process
             ipcRenderer.on('export-pdf-response', (event, obj) => {
@@ -222,7 +226,7 @@
         updated() {
             // Re-set 'caretPos' if delimiters where completed
             if (this.alignCaretPos) {
-                document.getElementById('textarea').selectionEnd = this.caretPos + this.alignCaretPosOffset
+                Id('textarea').selectionEnd = this.caretPos + this.alignCaretPosOffset
                 this.alignCaretPos = false
                 this.alignCaretPosOffset = 0
             }
@@ -236,7 +240,12 @@
                 this.setListStyle()
 
                 // Fix Styling for checkboxes (task list)
-                this.clearListStyle(this.getCheckboxList(document.getElementById('screen')))
+                this.clearListStyle(this.getCheckboxList(Id('screen')))
+            }
+
+            if (this.sidepaneScrollIsOffset) {
+                ClassNameSingle('active').scrollIntoViewIfNeeded()
+                this.sidepaneScrollIsOffset = false
             }
         },
         computed: {
@@ -285,6 +294,9 @@
                     this.short_insert_list,
                     this.short_insert_list
                 ])
+            },
+            notes() {
+                return this.$store.getters.notes
             },
             exportNewFile() {
                 return this.$store.getters.exportFile
@@ -384,7 +396,7 @@
                 // Just so we force Vue to be aware of the mutation to 'caretPos'
             },
             index: function (prev, curr) {
-                document.getElementsByClassName('activeEmoji')[0].scrollIntoViewIfNeeded()
+                ClassNameSingle('activeEmoji').scrollIntoViewIfNeeded()
             },
             autoMojiOpen: function (prev, curr) {
                 if (curr) {
@@ -543,7 +555,7 @@
             },
             // EOD
             syncText(forced=false) {
-                document.getElementById('fake-ta').innerText = this.activeNoteText
+                Id('fake-ta').innerText = this.activeNoteText
                 this.exposeMispelled(forced)
             },
             isWord(text) {
@@ -553,7 +565,7 @@
                 return new RegExp('\\b[a-z]+[\-[a-z]+]?\\b', 'gi').test(text)
             },
             currentSelectionWord() {
-                return this.activeNoteText.slice(document.getElementById('textarea').selectionStart, document.getElementById('textarea').selectionEnd)
+                return this.activeNoteText.slice(Id('textarea').selectionStart, Id('textarea').selectionEnd)
             },
             createSuggestionsList(word) {
                 let suggestions = []
@@ -563,7 +575,7 @@
                 }
                 let vm = this
 
-                let ta = document.getElementById('textarea')
+                let ta = Id('textarea')
                 let start = ta.selectionStart
                 let end = ta.selectionEnd
 
@@ -579,7 +591,7 @@
                 return suggestions.length > 0 ? suggestions : [nomatch]
             },
             replaceSelectionText(word, start, end) {
-                let ta = document.getElementById('textarea')
+                let ta = Id('textarea')
                 let text = this.activeNoteText.slice(0, start).concat(word).concat(this.activeNoteText.slice(end))
 
                 this.alignCaretPos = true
@@ -619,14 +631,10 @@
                 return new RegExp('(www|http:|https:|file:|ftp:)+[^\\s]+[\\w]', 'g').test(string)
             },
             resizeFakeTA() {
-                document.getElementById('fake-ta').style.width = String(document.getElementById('textarea').offsetWidth - 4).concat('px')
+                Id('fake-ta').style.width = String(Id('textarea').offsetWidth - 4).concat('px')
             },
             scrollFakeTA() {
-                document.getElementById('fake-ta').scrollTop = document.getElementById('textarea').scrollTop
-            },
-            updateActiveNoteDOM() {
-                // Load activeNoteDOM
-                this.$store.dispatch("updateActiveNoteDOM", document.getElementsByClassName("active")[0])
+                Id('fake-ta').scrollTop = Id('textarea').scrollTop
             },
             addNote() {
                 // Fetch info from box
@@ -640,9 +648,8 @@
                 // Just close dialog box
                 this.closeAllModal()
 
-                // Update activeNoteDOM
-                this.updateActiveNoteDOM()
-                this.scrollIsOffset = true
+                // Update scrollOffset inorder to scroll back to new Note
+                this.sidepaneScrollIsOffset = true
             },
             createContextMenu() {
                 let vm = this
@@ -788,7 +795,7 @@
                     checkbox.parentElement.style.marginLeft = '-10px' // li
 
                     // To allow us style the checkbox better
-                    let span = document.createElement('span')
+                    let span = CreateElement('span')
                     span.classList.add('checkbox-span')
                     span.style.position = 'absolute'
                     span.style.height = '17px'
@@ -804,10 +811,7 @@
                 })
             },
             updateTATabSize() {
-                document.getElementById('textarea').style.tabSize = this.tabSize
-            },
-            scrollToActiveNoteDOM() {
-                this.$parent.activeNoteDOM.scrollIntoViewIfNeeded()
+                Id('textarea').style.tabSize = this.tabSize
             },
             replyDeleteNote(flag) {
                 if (flag) {
@@ -899,12 +903,12 @@
                 return this.activeNoteText.replace(/\$\$[\n]*?[\s\S]*?[\n]*?\$\$/g, (m, o, s) => {return katex.renderToString(m.slice(2, m.length-2))})
             },
             checkToMove() {
-                if (event.keyCode == keycodes.left_arrow ) {// "37") {
+                if (event.keyCode == keycodes.left_arrow ) {
                     // Left arrow
                     this.index = this.index > 0 ? this.index - 1 : this.index
                 }
 
-                if (event.keyCode == keycodes.right_arrow) { // "39") {
+                if (event.keyCode == keycodes.right_arrow) {
                     // Right arrow
                     this.index = this.index < this.sortedEmojis.length -1 ? this.index + 1 : this.index
                 }
@@ -931,7 +935,7 @@
                     let lastChunkLength = this.lastChunk.length
 
                     // Break up text to include 'autocompleted' text
-                    let begChunk = this.activeNoteText.slice(0, lastChunkIndex) //this.activeNoteText.slice(0, this.activeNoteText.indexOf(this.lastChunk))
+                    let begChunk = this.activeNoteText.slice(0, lastChunkIndex)
                     let endChunk = this.activeNoteText.slice(lastChunkIndex).slice(this.lastChunk.length)
 
                     // We clean any prepended whitespaces to clean up text and avoid overadding whitespaces
@@ -1040,7 +1044,6 @@
 
                     return newText
                 } else {
-                    //return this.deleteClosingDelims(text)
                     return text
                 }
             },
@@ -1059,7 +1062,7 @@
                 this.syncText()
             },
             closeAllModal() {
-                let ta = document.getElementById('textarea')
+                let ta = Id('textarea')
 
                 // Set ranges
                 this.selectionRange = [ta.selectionStart, ta.selectionEnd]
@@ -1069,12 +1072,12 @@
                     'className': 'selection'
                 })
 
-                let tM = document.getElementById('t-modal')
+                let tM = Id('t-modal')
                 tM.children[0].value = ''
 
                 this.updateCaretPos(0)
 
-                document.getElementById('editor').style.opacity = "1"
+                Id('editor').style.opacity = "1"
 
                 this.$store.dispatch("setModalVisibility", false)
 
@@ -1093,7 +1096,7 @@
             },
             setListStyle() {
                 // Add Proper style for bullet list marker
-                let listItems = document.getElementById('screen').querySelectorAll('li')
+                let listItems = QuerySelectorAll('li', Id('screen'))
 
                 for (var i = 0;i < listItems.length;i++) {
                     listItems[i].style.listStyleType = this.bulletListMarker
@@ -1101,7 +1104,7 @@
             },
             handleExternalLinks() {
                 // Make sure all links in the MD preview are opened in the default browser
-                let anchors = document.getElementById('screen').querySelectorAll('a')
+                let anchors = QuerySelectorAll('a', Id('screen'))
 
                 for (var i = 0;i < anchors.length;i++) {
                     anchors[i].addEventListener('click', function (event) {
@@ -1112,31 +1115,31 @@
                 }
             },
             resetCaretPosAlignment() {
-                document.getElementById('textarea').selectionEnd = document.getElementById('textarea').selectionEnd - this.alignCaretPosOffset
-                this.caretPos = document.getElementById('textarea').selectionEnd
+                Id('textarea').selectionEnd = Id('textarea').selectionEnd - this.alignCaretPosOffset
+                this.caretPos = Id('textarea').selectionEnd
 
                 this.alignCaretPos = false
                 this.alignCaretPosOffset = 0
             },
             incTANSBottomPad(size) {
                 if (this.caretPos == this.activeNoteText.length-1) {
-                    document.getElementById('textarea').scrollTop = document.getElementById('textarea').scrollHeight
+                    Id('textarea').scrollTop = Id('textarea').scrollHeight
                 }
                 // increase bottom padding
                 // Scroll into view
-                document.getElementById('textarea').style.paddingBottom = String(size).concat("px")
-                document.getElementById('fake-ta').style.paddingBottom = String(size).concat("px")
+                Id('textarea').style.paddingBottom = String(size).concat("px")
+                Id('fake-ta').style.paddingBottom = String(size).concat("px")
 
                 if (this.live) {
-                    document.getElementById('screen').style.paddingBottom = String(size).concat("px")
+                    Id('screen').style.paddingBottom = String(size).concat("px")
                 }
             },
             decTANSBottomPad(size) {
-                document.getElementById('textarea').style.paddingBottom = String(size).concat("px")
-                document.getElementById('fake-ta').style.paddingBottom = String(size).concat("px")
+                Id('textarea').style.paddingBottom = String(size).concat("px")
+                Id('fake-ta').style.paddingBottom = String(size).concat("px")
 
                 if (this.live) {
-                    document.getElementById('screen').style.paddingBottom = String(size).concat("px")
+                    Id('screen').style.paddingBottom = String(size).concat("px")
                 }
             }
         }
@@ -1205,18 +1208,12 @@
 
     table {
         height: 80px;
-        border: 1px solid #c1c1c1;
         border-radius: 5px;
         padding: 4px;
         margin-left: 18px;
         overflow-y: auto;
         position: absolute;
         top: 15%;
-        background: white;
-    }
-
-    tr {
-        border-bottom: 1px solid #d9d9d9;
     }
 
     tr:last-child {
@@ -1224,7 +1221,6 @@
     }
 
     tr:hover {
-        background: #d7d7d7;
         opacity: 0.8;
     }
 

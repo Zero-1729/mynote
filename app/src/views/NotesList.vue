@@ -30,11 +30,11 @@
         <!-- render notes in a list -->
         <div class="notes-list-canvas" id="notes-list-canvas">
 
-            <div class="search-msg" :class="{'slide-in-further': filteredNotes.length == 0, hideModal: filteredNotes.length > 0}">
-                <h5>Sorry, it seems there are no matches</h5>
+            <div class="search-msg" :class="{'slide-in-further': filteredNotes.length == 0 || notes.length == 0, hideModal: filteredNotes.length > 0}">
+                <h5>{{ notes.length == 0 ? 'You have no notes yet' : 'Sorry, it seems there are no matches' }}</h5>
             </div>
 
-            <div class="list-group">
+            <div class="list-group" v-show="notes.length > 0, filteredNotes.length > 0">
                 <div v-for="note in filteredNotes"
                     class="list-group-item"
                     @keydown.40="move(40)"
@@ -103,6 +103,7 @@
     const marked = require('marked')
 
     const dmoji = require('./../util/downmoji')
+    const { ClassNameSingle } = require('./../util/document')
 
     const HTMLtemplate = `<html>
 <head>
@@ -132,16 +133,6 @@
             // Incase app is killed before new title is typed
             this.closeAllModal()
 
-            // Load activeNoteDOM
-            this.updateActiveNoteDOM()
-
-            // Properly initialize 'index'
-            this.filteredNotes.forEach((note) => {
-                if (note.hash == this.activeNote.hash) {
-                    this.index = this.filteredNotes.indexOf(note)
-                }
-            })
-
             // Reset 'exported' vars
             this.exportedName = ''
             this.exported = false
@@ -150,22 +141,18 @@
                 this.exported = arg.status
             })
         },
+        updated() {
+            // Scrool to active note when 'search' is freshly empty
+            if (this.scrollIsOffset) {
+                ClassNameSingle('active').scrollIntoViewIfNeeded()
+                this.scrollIsOffset = false
+            }
+        },
         watch: {
-            scrollIsOffset: function (curr, prev) {
-                if (curr) {
-                    this.updateActiveNoteDOM()
-
-                    // Scroll to active note
-                    this.$parent.activeNoteDOM.scrollIntoViewIfNeeded()
-
-                    // reset offset value
-                    this.scrollIsOffset = false
-                }
-            },
             search: function (curr, prev) {
                 if (curr == '') {
-                    // Scroll to active note
-                    this.$parent.activeNoteDOM.scrollIntoViewIfNeeded()
+                    // Set scroll offset
+                    this.scrollIsOffset = true
                 }
             }
         },
@@ -182,10 +169,6 @@
                 let html = this.emojisType == 'emojione' ? dmoji.parse(marked(this.sanitizeWithKatex(note)), this.emojisPath, [' ', ';', ',', '.'], 'emojione') : dmoji.parse(marked(this.sanitizeWithKatex(note)), this.emojisPath, [' ', ';', ',', '.'])
 
                 return this.htmlTemplate.replace(/\$\[0\]/, title).replace(/\$\[1\]/, style).replace(/\$\[2\]/, katex).replace(/\$\[3\]/, html)
-            },
-            updateActiveNoteDOM() {
-                // Load activeNoteDOM
-                this.$store.dispatch("updateActiveNoteDOM", document.getElementsByClassName("active")[0])
             },
             toggleSettings() {
                 this.$store.dispatch("setSettingsOpen", !this.settingsOpen)
@@ -260,7 +243,6 @@
                 }
 
                 this.$store.dispatch("updateActiveNote", note)
-                this.$store.dispatch("updateActiveNoteDOM", document.getElementsByClassName("active")[0])
             },
             setCurrentPane(pane) {
                 this.$store.dispatch("setCurrentPane", pane)
@@ -297,22 +279,6 @@
                     this.$store.dispatch("setModalVisibility", false)
                     this.$store.dispatch("setExportModalVisibility", false)
                 }
-            },
-            addNote() {
-                // Fetch info from box
-                let count = this.$store.getters.uNCount
-                let value = event.target.value
-                let title = value == '' ? `New Note (${count})` : value
-
-                // Create the new Note
-                this.$store.dispatch("addNote", title)
-
-                // Just close dialog box
-                this.closeAllModal()
-
-                // Update activeNoteDOM
-                this.updateActiveNoteDOM()
-                this.scrollIsOffset = true
             },
             serializeText(text) {
                 var result = String()
@@ -534,6 +500,9 @@
 
     .search-msg h5 {
         margin: 0;
+        padding: 18px 12px;
+        border-radius: 5px;
+        text-align: center;
     }
 
     .list-group {

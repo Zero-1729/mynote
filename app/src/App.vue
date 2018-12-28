@@ -19,6 +19,7 @@
     const {ipcRenderer, remote} = require('electron')
 
     const { buildMap } = require('./util/object')
+    const { Id, ClassNameSingle, ClassNameN } = require('./util/document')
 
     const os    = require('os')
     const path  = require('path')
@@ -108,15 +109,17 @@
 
             // recieve full screen prompt
             ipcRenderer.on('enter-fullscreen', (event, data) => {
-                document.getElementsByClassName('notes-list-canvas')[0].style.height = "440px"
+                ClassNameSingle('notes-list-canvas').style.height = "440px"
             })
 
             ipcRenderer.on('leave-fullscreen', (event, data) => {
-                document.getElementsByClassName('notes-list-canvas')[0].style.height = "300px"
+                ClassNameSingle('notes-list-canvas').style.height = "300px"
             })
 
-            // Scroll to active note
-            this.activeNoteDOM.scrollIntoViewIfNeeded()
+            if (this.notes.length > 0) {
+                // Scroll to active note
+                ClassNameSingle('active').scrollIntoViewIfNeeded()
+            }
         },
         updated() {
             this.$store.dispatch("loadFontFamily", this.$route.name)
@@ -166,11 +169,11 @@
                     this.short_decFontSize
                 ])
             },
+            notes() {
+                return this.$store.getters.notes
+            },
             currentFontSize() {
                 return this.$store.getters.fontSize
-            },
-            activeNoteDOM () {
-                return this.$store.getters.activeNoteDOM
             },
             sideNavHidden () {
                 return this.$store.getters.sideNavHidden
@@ -249,55 +252,51 @@
                 this.$store.dispatch('setSideNavHidden', value)
             },
             slideToolset() {
-                if (["", "0px"].includes(document.getElementById('toolset').style.width)) {
-                    document.getElementById('toolset').style.width = "240px"
+                if (["", "0px"].includes(Id('toolset').style.width)) {
+                    Id('toolset').style.width = "240px"
 
                     // add setDefaultTimout to '2secs' to delay animation of buttons
                     var animEv = () => {
                         for (var i = 0;i < 6;i++) {
-                            document.getElementsByClassName('toolset-btns-holder')[i].style.visibility = 'visible'
+                            ClassNameN('toolset-btns-holder', i).style.visibility = 'visible'
                         }
                     }
 
                     window.setTimeout(animEv, 225)
                     window.clearTimeout(animEv)
                 } else {
-                    document.getElementById('toolset').style.width = "0px"
+                    Id('toolset').style.width = "0px"
 
                     for (var i = 0;i < 6;i++) {
-                        document.getElementsByClassName('toolset-btns-holder')[i].style.visibility = 'hidden'
+                        ClassNameN('toolset-btns-holder', i).style.visibility = 'hidden'
                     }
                 }
             },
             slidePane(force=false) {
                 // close toolset if open
-                this.$children[0].slideToolsetBtns(true)
+                this.setSideNavHidden(false)
 
-                if (document.getElementById('notes-list').style.width.includes("px") || document.getElementById('notes-list').style.width == "") {
-                    this.setSideNavHidden(false)
+                if ("0px" == Id('notes-list').style.width) {
+                    Id('toolset').style.width = "0px"
 
-                    if ("0px" == document.getElementById('notes-list').style.width) {
-                        document.getElementById('toolset').style.width = "0px"
+                    function rest() {
+                        Id('notes-list').style.visibility = 'visible'
+                        Id('notes-list').style.width = "270px"
+                        Id('editor') ? Id('editor').style.marginLeft = '0px' : ClassNameSingle('main-container').style.marginLeft = "270px"
+                    }
 
-                        function rest() {
-                            document.getElementById('notes-list').style.visibility = 'visible'
-                            document.getElementById('notes-list').style.width = "270px"
-                            document.getElementById('editor') ? document.getElementById('editor').style.marginLeft = '0px' : document.getElementsByClassName('main-container')[0].style.marginLeft = "270px"
-                        }
+                    // We want to give the effect off it (i.e the toolset) being closed all along
+                    window.setTimeout(rest, 200)
+                    window.clearTimeout(rest)
+                } else if (!("0px" == Id('notes-list').style.width) || force) {
+                    this.setSideNavHidden(true)
 
-                        // We want to give the effect off it (i.e the toolset) being closed all along
-                        window.setTimeout(rest, 200)
-                        window.clearTimeout(rest)
-                    } else if (!("0px" == document.getElementById('notes-list').style.width) || force) {
-                        this.setSideNavHidden(true)
+                    Id('notes-list').style.visibility = 'hidden'
+                    Id('notes-list').style.width = "0px"
+                    Id('editor') ? Id('editor').style.marginLeft = '-270px' : ClassNameSingle('main-container').style.marginLeft = "0px"
 
-                        document.getElementById('notes-list').style.visibility = 'hidden'
-                        document.getElementById('notes-list').style.width = "0px"
-                        document.getElementById('editor') ? document.getElementById('editor').style.marginLeft = '-270px' : document.getElementsByClassName('main-container')[0].style.marginLeft = "0px"
-
-                        for (var i = 0;i < 6;i++) {
-                            document.getElementsByClassName('toolset-btns-holder')[i].style.visibility = 'hidden'
-                        }
+                    for (var i = 0;i < 6;i++) {
+                        ClassNameN('toolset-btns-holder', i).style.visibility = 'hidden'
                     }
                 }
             }
@@ -352,10 +351,6 @@
 
     #screen a {
     	text-decoration: none !important;
-    }
-
-    #screen a.absent {
-    	color: #cc0000 !important;
     }
 
     #screen a.anchor {
@@ -616,14 +611,12 @@
 
     table tr th {
     	font-weight: bold;
-    	/*border: 1px solid #cccccc;*/
     	text-align: left;
     	margin: 0;
     	padding: 6px 13px;
     }
 
     table tr td {
-    	/*border: 1px solid #cccccc;*/
     	text-align: left;
     	margin: 0;
     	padding: 6px 13px;
@@ -866,13 +859,5 @@
 
     .toolset-btns-holder:active {
     	transform: Scale(0.9);
-    }
-
-    .bin:hover path {
-    	fill: red !important;
-    }
-
-    .starred path {
-    	fill: #ff1389 !important;
     }
 </style>
