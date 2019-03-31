@@ -26,7 +26,7 @@ A Minimalist's Markdown Notes App
 - The Spellcheck's dictionary can be changed to any of the nine (9) languages supported (`en`, `de`, `fr`, `es`, `nl`, `sv`, `pt`)
 - Support for word suggestions for misspelled words; and replacement
 - A handy Actions Toolset on the Sidepane; Triggered by `CommandOrControl+G` or clicking the pill looking button on the Sidepane
-- Markdown HotKeys; I.e `Alt+Shift+M` inserts a (KaTeX) math block. [Click here](https://github.com/Zero-1729/mynote/app/src/public/docs/mynote_shortcuts.pdf) to get the full list of supported Shortcuts
+- Markdown HotKeys; I.e `Alt+Shift+M` inserts a (KaTeX) math block. [Click here](https://github.com/Zero-1729/mynote/blob/master/app/src/public/docs/mynote_shortcuts.pdf) to get the full list of supported Shortcuts
 - Collapsable Sidepane; For more space when note taking. Triggered by `CommandOrControl+h`
 - Notes export to `MD`, `HTML`, and `PDF` (still experimental)
 - Status info Footer; with estimated read time, creation and modification dates, and notes count
